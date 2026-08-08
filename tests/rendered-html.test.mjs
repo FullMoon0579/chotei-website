@@ -20,22 +20,26 @@ test("server-renders the finished CHOTEI site", async () => {
 
   const html = await response.text();
   assert.match(html, /<html lang="ja">/);
-  assert.match(html, /<title>長亭 CHOTEI \| 中華料理と日本酒の邂逅<\/title>/);
+  assert.match(html, /<title>長亭 CHOTEI \| 中国料理の技で、四季を奏でる<\/title>/);
   assert.match(html, /長亭由来/);
-  assert.match(html, /Chinese Cuisine Meets Japanese Sake/);
+  assert.match(html, /Where Chinese Cuisine Meets Japanese Seasons/);
   assert.match(html, /id="cuisine"/);
-  assert.match(html, /id="sake"/);
+  assert.match(html, /id="menus"/);
+  assert.match(html, /id="space"/);
+  assert.match(html, /id="information"/);
   assert.match(html, /id="reservation"/);
   assert.match(html, /twitter:card/);
-  assert.match(html, /og\.png/);
+  assert.match(html, /og\.webp/);
+  assert.match(html, /images\/real\/hero-counter\.webp/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
 });
 
 test("includes accessible navigation and primary actions", async () => {
   const html = await (await render()).text();
-  assert.match(html, /aria-label="主要导航"/);
+  assert.match(html, /aria-label="Primary navigation"/);
   assert.match(html, /href="#origin"/);
   assert.match(html, /href="#reservation"/);
-  assert.match(html, /mailto:reservation@chotei\.jp/);
-  assert.match(html, /aria-label="温かい木のカウンターがある長亭の空間"/);
+  assert.match(html, /href="https:\/\/restaurant\.ikyu\.com\/149159"/);
+  assert.match(html, /href="tel:\+815031013945"/);
+  assert.match(html, /alt="長亭のカウンター席"/);
 });

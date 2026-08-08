@@ -10,21 +10,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: base,
-    title: "長亭 CHOTEI | 中華料理と日本酒の邂逅",
-    description: "伝統中華にフランス料理のエスプリと日本の懐石の美意識を重ね、地方の日本酒とともにお届けする長亭の公式サイト。",
+    title: "長亭 CHOTEI | 中国料理の技で、四季を奏でる",
+    description: "中国料理の技法で日本の四季を映し出す、東京・六本木の長亭。旬の料理、コース、空間、店舗情報とご予約をご案内します。",
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
     openGraph: {
-      title: "長亭 CHOTEI | 中華料理と日本酒の邂逅",
-      description: "異郷で出会い、一つの食卓になる。",
-      images: [{ url: new URL("/og.png", base), width: 1800, height: 900, alt: "長亭 CHOTEI" }],
+      title: "長亭 CHOTEI | 中国料理の技で、四季を奏でる",
+      description: "Where Chinese Cuisine Meets Japanese Seasons",
+      images: [{ url: new URL("/og.webp", base), width: 1200, height: 630, alt: "長亭 CHOTEI 六本木" }],
       type: "website",
       locale: "ja_JP",
     },
     twitter: {
       card: "summary_large_image",
       title: "長亭 CHOTEI",
-      description: "中華料理と日本酒の邂逅",
-      images: [new URL("/og.png", base)],
+      description: "中国料理の技で、日本の四季を奏でる。",
+      images: [new URL("/og.webp", base)],
     },
   };
 }
