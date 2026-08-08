@@ -109,7 +109,8 @@ const copy = {
 type LogoVariant = "horizontal" | "vertical";
 
 function BrandMark({ tone = "black", variant = "horizontal", className = "" }: { tone?: "black" | "white"; variant?: LogoVariant; className?: string }) {
-  return <a className={`brand brand--${variant} ${className}`} href="#top" aria-label="CHOTEI top"><img src={`/images/brand/logo-${variant}-${tone}.webp`} alt="長亭 CHOTEI" /></a>;
+  const logoFile = variant === "horizontal" ? `logo-new-${tone}.webp` : `logo-${variant}-${tone}.webp`;
+  return <a className={`brand brand--${variant} ${className}`} href="#top" aria-label="CHOTEI top"><img src={`/images/brand/${logoFile}`} alt="長亭 CHOTEI" /></a>;
 }
 
 function RailTitle({ label, light = false }: { label: string; light?: boolean }) {
@@ -169,7 +170,7 @@ export default function ChoteiSite() {
   return (
     <main id="top">
       <header className={`site-header ${headerScrolled ? "is-scrolled" : ""}`}>
-        <BrandMark tone={headerScrolled ? "black" : "white"} />
+        <BrandMark tone="black" />
         <nav className="desktop-nav" aria-label="Primary navigation">{["origin", "cuisine", "menus", "store", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}</nav>
         <div className="language" aria-label="Language">{(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => changeLanguage(code)} className={lang === code ? "is-active" : ""} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}</div>
         <details className="mobile-nav"><summary aria-label="Menu"><span /><span /></summary><nav>{["origin", "cuisine", "menus", "store", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}</nav></details>
@@ -179,7 +180,7 @@ export default function ChoteiSite() {
         <img src="/images/real/hero-counter.webp" alt="長亭のカウンター席" fetchPriority="high" />
         <div className="hero__shade" />
         <div className="hero__copy"><h1><span>{t.hero.line1}</span><span>{t.hero.line2}</span></h1></div>
-        <a className="scroll-mark" href="#origin" aria-label={t.nav[0]} />
+        <a className={`scroll-mark ${headerScrolled ? "is-hidden" : ""}`} href="#origin" aria-label={t.nav[0]} />
       </section>
 
       <section className="origin light-section" id="origin">

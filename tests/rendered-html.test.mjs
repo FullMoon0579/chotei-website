@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -31,7 +32,7 @@ test("server-renders the finished CHOTEI site", async () => {
   assert.match(html, /twitter:card/);
   assert.match(html, /og\.webp/);
   assert.match(html, /images\/real\/hero-counter\.webp/);
-  assert.match(html, /images\/brand\/logo-horizontal-white\.webp/);
+  assert.match(html, /images\/brand\/logo-new-black\.webp/);
   assert.match(html, /images\/brand\/logo-vertical-black\.webp/);
   assert.match(html, /ふかひれコース/);
   assert.match(html, /鮑コース/);
@@ -54,4 +55,13 @@ test("includes accessible navigation and primary actions", async () => {
   assert.match(html, /href="https:\/\/www\.google\.com\/maps\/place\/%E9%95%B7%E4%BA%AD\+CHOTEI\//);
   assert.match(html, /href="tel:\+815031013945"/);
   assert.match(html, /alt="長亭のカウンター席"/);
+});
+
+test("uses the requested brand font and animated scroll guide", async () => {
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(css, /KleeOne-SemiBold\.woff2/);
+  assert.match(css, /font-weight: 600/);
+  assert.match(css, /@keyframes scrollGuide/);
+  assert.match(css, /\.scroll-mark\.is-hidden/);
+  assert.match(css, /\.rail-title i \{[^}]*width: 2px;[^}]*height: 84px;/s);
 });
