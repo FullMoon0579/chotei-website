@@ -32,8 +32,15 @@ test("server-renders the finished CHOTEI site", async () => {
   assert.match(html, /og\.webp/);
   assert.match(html, /images\/real\/hero-counter\.webp/);
   assert.match(html, /images\/brand\/logo-horizontal-white\.webp/);
-  assert.match(html, /images\/brand\/logo-vertical-en-black\.webp/);
+  assert.match(html, /images\/brand\/logo-vertical-black\.webp/);
+  assert.match(html, /ふかひれコース/);
+  assert.match(html, /鮑コース/);
+  assert.match(html, /佛跳牆コース/);
+  assert.match(html, /熊掌コース/);
+  assert.match(html, /¥3,980/);
+  assert.match(html, /¥19,800/);
   assert.doesNotMatch(html, /gallery-arrow|gallery-dots|<figcaption>/);
+  assert.doesNotMatch(html, /IKYU RESTAURANT|ROPPONGI, TOKYO|>ORIGIN</);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
 });
 
@@ -44,6 +51,7 @@ test("includes accessible navigation and primary actions", async () => {
   assert.match(html, /href="#store"/);
   assert.match(html, /href="#reservation"/);
   assert.match(html, /href="https:\/\/restaurant\.ikyu\.com\/149159"/);
+  assert.match(html, /href="https:\/\/www\.google\.com\/maps\/place\/%E9%95%B7%E4%BA%AD\+CHOTEI\//);
   assert.match(html, /href="tel:\+815031013945"/);
   assert.match(html, /alt="長亭のカウンター席"/);
 });
