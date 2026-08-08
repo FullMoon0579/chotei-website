@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+/* eslint-disable @next/next/no-img-element -- all restaurant and logo assets are pre-sized WebP files */
+
+import { useEffect, useState } from "react";
 
 type Lang = "ja" | "en" | "zh";
 type Season = "spring" | "summer" | "autumn" | "winter";
@@ -25,7 +27,7 @@ const storeImages = [
 const copy = {
   ja: {
     htmlLang: "ja",
-    nav: ["長亭由来", "お料理", "メニュー", "空間", "店舗", "ご予約"],
+    nav: ["長亭由来", "お料理", "メニュー", "店舗", "ご予約"],
     hero: { location: "ROPPONGI, TOKYO", line1: "中国料理の技で、", line2: "四季を奏でる", sub: "Where Chinese Cuisine Meets Japanese Seasons" },
     origin: {
       rail: "長亭由来", en: "ORIGIN", lead: "五里に短亭、\n十里に長亭。",
@@ -54,14 +56,14 @@ const copy = {
         { title: "特別コース", meta: "ADVANCE RESERVATION", detail: ["ふかひれコース", "鮑コース・佛跳牆コース", "熊掌コース・集合コース"] },
       ],
     },
-    space: { rail: "空間", en: "THE SPACE", labels: ["入口", "カウンター", "ダイニング", "テーブル席", "主室", "個室"] },
+    space: { rail: "店舗", en: "THE STORE", labels: ["入口", "カウンター", "ダイニング", "テーブル席", "主室", "個室"] },
     info: { rail: "店舗", en: "INFORMATION", hours: "営業時間", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "定休日", closedValue: "日曜日・不定休", tel: "電話番号", address: "住所", addressValue: "〒106-0032 東京都港区六本木7-13-9 1F", seats: "座席数", seatsValue: "カウンター 4席 / 個室 6室", map: "地図・アクセス" },
     reservation: { rail: "ご予約", en: "RESERVATION", site: "予約サイト", button: "一休で予約する", notice: "予約時のお願い", rules: "アレルギー、お子様の同伴、遅刻などは事前に店舗へお知らせください。キャンセル規定は予約サイトでご確認ください。", alternative: "空席が見つからない場合は、お電話にてお問い合わせください。" },
     footer: { slogan: "Where Chinese Cuisine Meets Japanese Seasons", notice: "お知らせ", copyright: "© 2026 CHOTEI. All rights reserved." },
   },
   en: {
     htmlLang: "en",
-    nav: ["Origin", "Cuisine", "Menus", "Space", "Information", "Reserve"],
+    nav: ["Origin", "Cuisine", "Menus", "Store", "Reserve"],
     hero: { location: "ROPPONGI, TOKYO", line1: "Chinese technique,", line2: "Japanese seasons", sub: "Where Chinese Cuisine Meets Japanese Seasons" },
     origin: { rail: "Origin", en: "ORIGIN", lead: "A short pavilion at five li,\na long pavilion at ten.", body: ["In ancient China, a changting was a place along the road where travellers rested, loved ones said farewell, and returning friends were welcomed home.", "Quietly watching over meetings and reunions, it connected one person to another. We placed that sentiment in our name: CHOTEI."] },
     philosophy: { rail: "Philosophy", en: "PHILOSOPHY", headline: "Not fusion, but dialogue.", body: ["CHOTEI is grounded in Chinese cuisine, while drawing inspiration from the seasons, ingredients and aesthetic clarity cherished in Japanese cooking.", "China speaks of eating in time; Japan speaks of shun, the precise moment of seasonality. Different expressions share one truth: flavour begins with listening to nature.", "Chinese technique reflects the Japanese seasons. Two culinary cultures resonate clearly within a single plate. This is the cuisine of CHOTEI."] },
@@ -72,14 +74,14 @@ const copy = {
       { title: "C / D Courses", meta: "¥13,200 / ¥19,800", detail: ["Seasonal appetizers and shark fin", "Matsutake, wagyu, abalone and seasonal fish", "Seasonal rice, dessert, fruit and tea"] },
       { title: "Special Courses", meta: "ADVANCE RESERVATION", detail: ["Shark fin course", "Abalone and Buddha Jumps Over the Wall courses", "Rare delicacy and collection courses"] },
     ] },
-    space: { rail: "Space", en: "THE SPACE", labels: ["Entrance", "Counter", "Dining room", "Table seating", "Main room", "Private room"] },
+    space: { rail: "Store", en: "THE STORE", labels: ["Entrance", "Counter", "Dining room", "Table seating", "Main room", "Private room"] },
     info: { rail: "Visit", en: "INFORMATION", hours: "Hours", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "Closed", closedValue: "Sundays and irregular holidays", tel: "Telephone", address: "Address", addressValue: "1F, 7-13-9 Roppongi, Minato-ku, Tokyo 106-0032", seats: "Seating", seatsValue: "4 counter seats / 6 private rooms", map: "Map & directions" },
     reservation: { rail: "Reserve", en: "RESERVATION", site: "Reservation site", button: "Reserve on Ikyu", notice: "Before your reservation", rules: "Please tell us in advance about allergies, children or possible late arrival. Cancellation terms are shown on the reservation site.", alternative: "If online availability is limited, please contact us by telephone." },
     footer: { slogan: "Where Chinese Cuisine Meets Japanese Seasons", notice: "News", copyright: "© 2026 CHOTEI. All rights reserved." },
   },
   zh: {
     htmlLang: "zh-CN",
-    nav: ["長亭由来", "四季料理", "菜单套餐", "用餐空间", "店铺信息", "预约"],
+    nav: ["長亭由来", "四季料理", "菜单套餐", "店铺", "预约"],
     hero: { location: "东京 · 六本木", line1: "以中国料理之技，", line2: "奏响日本四季", sub: "Where Chinese Cuisine Meets Japanese Seasons" },
     origin: { rail: "長亭由来", en: "ORIGIN", lead: "五里短亭，\n十里长亭。", body: ["在中国古代，长亭是旅途中停歇的地方，也是送别挚友、迎接归人的所在。", "它静静见证相遇与重逢，将人与人相连。我们把这份心意放进“長亭”之名。"] },
     philosophy: { rail: "料理哲学", en: "PHILOSOPHY", headline: "不是融合，而是对话。", body: ["長亭以中华料理为根基，同时从日本料理珍视的四季、食材与审美中获得启发。", "中国讲“不时不食”，日本讲“旬”。表达不同，却共同相信：真正的美味来自顺应自然、尊重当季。", "以中餐技法映照日本四季，让两种饮食文化在一盘之中清晰回应——这就是長亭的料理。"] },
@@ -90,15 +92,17 @@ const copy = {
       { title: "C / D 套餐", meta: "¥13,200 / ¥19,800", detail: ["季节前菜与金汤鱼翅", "松茸和牛、鲍鱼与旬鱼", "季节主食、甜点、水果与茶"] },
       { title: "高级套餐", meta: "需提前预约", detail: ["鱼翅套餐", "鲍鱼套餐与佛跳墙套餐", "熊掌套餐与集合套餐"] },
     ] },
-    space: { rail: "用餐空间", en: "THE SPACE", labels: ["入口", "吧台", "用餐区", "餐桌席", "主厅", "包间"] },
+    space: { rail: "店铺", en: "THE STORE", labels: ["入口", "吧台", "用餐区", "餐桌席", "主厅", "包间"] },
     info: { rail: "店铺", en: "INFORMATION", hours: "营业时间", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "休息日", closedValue: "周日及不定休", tel: "电话", address: "地址", addressValue: "〒106-0032 日本东京都港区六本木7-13-9 1F", seats: "座席", seatsValue: "吧台4席 / 包间6间", map: "地图与路线" },
     reservation: { rail: "预约", en: "RESERVATION", site: "预约网站", button: "前往一休预约", notice: "预约注意事项", rules: "如有过敏、儿童同行或可能迟到，请提前告知店铺。取消规则请以预约网站说明为准。", alternative: "若线上没有合适座席，也可致电咨询。" },
     footer: { slogan: "Where Chinese Cuisine Meets Japanese Seasons", notice: "最新消息", copyright: "© 2026 CHOTEI. All rights reserved." },
   },
 } as const;
 
-function BrandMark({ light = false }: { light?: boolean }) {
-  return <a className={`brand ${light ? "brand--light" : ""}`} href="#top" aria-label="CHOTEI top"><span>長亭</span><small>CHOTEI · ROPPONGI</small></a>;
+type LogoVariant = "horizontal" | "vertical" | "vertical-en";
+
+function BrandMark({ tone = "black", variant = "horizontal", className = "" }: { tone?: "black" | "white"; variant?: LogoVariant; className?: string }) {
+  return <a className={`brand brand--${variant} ${className}`} href="#top" aria-label="CHOTEI top"><img src={`/images/brand/logo-${variant}-${tone}.webp`} alt="長亭 CHOTEI" /></a>;
 }
 
 function RailTitle({ ja, en, light = false }: { ja: string; en: string; light?: boolean }) {
@@ -111,8 +115,7 @@ export default function ChoteiSite() {
   const [seasonIndex, setSeasonIndex] = useState(0);
   const [menuIndex, setMenuIndex] = useState(0);
   const [storeIndex, setStoreIndex] = useState(0);
-  const [storePaused, setStorePaused] = useState(false);
-  const touchStart = useRef<number | null>(null);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
   const t = copy[lang];
   const seasonKeys = Object.keys(seasonalImages) as Season[];
   const activeSeasonImages = seasonalImages[season];
@@ -122,31 +125,40 @@ export default function ChoteiSite() {
   }, [t.htmlLang]);
 
   useEffect(() => {
+    const updateHeader = () => setHeaderScrolled(window.scrollY > 48);
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    return () => window.removeEventListener("scroll", updateHeader);
+  }, []);
+
+  useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced || storePaused) return;
-    const timer = window.setInterval(() => setStoreIndex((value) => (value + 1) % storeImages.length), 3000);
+    if (reduced) return;
+    const timer = window.setInterval(() => setSeasonIndex((value) => (value + 1) % activeSeasonImages.length), 4600);
     return () => window.clearInterval(timer);
-  }, [storePaused]);
+  }, [season, activeSeasonImages.length]);
 
-  const seasonCaption = t.cuisine.captions[season][seasonIndex];
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+    const timer = window.setInterval(() => setStoreIndex((value) => (value + 1) % storeImages.length), 4200);
+    return () => window.clearInterval(timer);
+  }, []);
+
   const activeMenu = t.menus.panels[menuIndex];
-
-  const nextSeasonImage = (direction: number) => setSeasonIndex((value) => (value + direction + activeSeasonImages.length) % activeSeasonImages.length);
-  const nextStoreImage = (direction: number) => setStoreIndex((value) => (value + direction + storeImages.length) % storeImages.length);
-
-  const storeSequence = useMemo(() => [-1, 0, 1].map(offset => (storeIndex + offset + storeImages.length) % storeImages.length), [storeIndex]);
+  const storeSequence = [-1, 0, 1].map(offset => (storeIndex + offset + storeImages.length) % storeImages.length);
 
   return (
     <main id="top">
-      <header className="site-header">
-        <BrandMark light />
+      <header className={`site-header ${headerScrolled ? "is-scrolled" : ""}`}>
+        <BrandMark tone={headerScrolled ? "black" : "white"} variant="horizontal" />
         <nav className="desktop-nav" aria-label="Primary navigation">
-          {["origin", "cuisine", "menus", "space", "information", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}
+          {["origin", "cuisine", "menus", "store", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}
         </nav>
         <div className="language" aria-label="Language">
           {(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => setLang(code)} className={lang === code ? "is-active" : ""} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}
         </div>
-        <details className="mobile-nav"><summary aria-label="Menu"><span /><span /></summary><nav>{["origin", "cuisine", "menus", "space", "information", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}</nav></details>
+        <details className="mobile-nav"><summary aria-label="Menu"><span /><span /></summary><nav>{["origin", "cuisine", "menus", "store", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}</nav></details>
       </header>
 
       <section className="hero" aria-label="CHOTEI">
@@ -156,29 +168,25 @@ export default function ChoteiSite() {
         <a className="scroll-mark" href="#origin"><span>SCROLL</span></a>
       </section>
 
-      <section className="origin dark-section" id="origin">
-        <RailTitle ja={t.origin.rail} en={t.origin.en} light />
+      <section className="origin light-section" id="origin">
+        <RailTitle ja={t.origin.rail} en={t.origin.en} />
         <div className="origin__location">ROPPONGI, TOKYO</div>
         <h2>{t.origin.lead.split("\n").map(line => <span key={line}>{line}</span>)}</h2>
         <div className="origin__body">{t.origin.body.map(p => <p key={p}>{p}</p>)}</div>
       </section>
 
-      <section className="philosophy dark-section" id="philosophy">
-        <RailTitle ja={t.philosophy.rail} en={t.philosophy.en} light />
+      <section className="philosophy light-section" id="philosophy">
+        <RailTitle ja={t.philosophy.rail} en={t.philosophy.en} />
         <h2>{t.philosophy.headline}</h2>
         <div className="philosophy__body">{t.philosophy.body.map((p, index) => <p key={p} className={index === 2 ? "is-highlight" : ""}>{p}</p>)}</div>
-        <div className="philosophy__ghost" aria-hidden="true">不時不食</div>
       </section>
 
       <section className="cuisine light-section" id="cuisine">
         <RailTitle ja={t.cuisine.rail} en={t.cuisine.en} />
         <div className="season-tabs" role="tablist" aria-label="Seasons">{seasonKeys.map(key => <button role="tab" aria-selected={season === key} className={season === key ? "is-active" : ""} key={key} onClick={() => { setSeason(key); setSeasonIndex(0); }}>{t.cuisine.seasons[key]}</button>)}</div>
-        <div className="cuisine__stage" onTouchStart={e => { touchStart.current = e.changedTouches[0].clientX; }} onTouchEnd={e => { if (touchStart.current === null) return; const delta = e.changedTouches[0].clientX - touchStart.current; if (Math.abs(delta) > 45) nextSeasonImage(delta < 0 ? 1 : -1); touchStart.current = null; }}>
-          <button className="gallery-arrow gallery-arrow--left" onClick={() => nextSeasonImage(-1)} aria-label="Previous image">←</button>
-          <figure key={`${season}-${seasonIndex}`}><img src={`/images/real/${activeSeasonImages[seasonIndex]}`} alt={seasonCaption} loading="lazy" /><figcaption>{seasonCaption}</figcaption></figure>
-          <button className="gallery-arrow gallery-arrow--right" onClick={() => nextSeasonImage(1)} aria-label="Next image">→</button>
+        <div className="cuisine__stage" aria-live="off">
+          {activeSeasonImages.map((image, index) => <img key={`${season}-${image}`} className={seasonIndex === index ? "is-active" : ""} src={`/images/real/${image}`} alt={t.cuisine.captions[season][index]} loading="lazy" aria-hidden={seasonIndex !== index} />)}
         </div>
-        <div className="gallery-dots">{activeSeasonImages.map((_, index) => <button key={index} className={seasonIndex === index ? "is-active" : ""} onClick={() => setSeasonIndex(index)} aria-label={`Image ${index + 1}`} aria-current={seasonIndex === index ? "true" : undefined} />)}</div>
       </section>
 
       <section className="menus" id="menus">
@@ -187,30 +195,29 @@ export default function ChoteiSite() {
         <div className="menu-detail" aria-live="polite"><div><span>{String(menuIndex + 1).padStart(2, "0")}</span><h3>{activeMenu.title}</h3><p>{activeMenu.meta}</p></div><ul>{activeMenu.detail.map(item => <li key={item}>{item}</li>)}</ul></div>
       </section>
 
-      <section className="space" id="space" onMouseEnter={() => setStorePaused(true)} onMouseLeave={() => setStorePaused(false)}>
-        <div className="space__rail"><RailTitle ja={t.space.rail} en={t.space.en} light /></div>
-        <div className="space__track">{storeSequence.map((index, position) => <figure key={`${index}-${position}`} className={position === 1 ? "is-current" : ""}><img src={`/images/real/${storeImages[index]}`} alt={t.space.labels[index]} loading="lazy" /><figcaption>{t.space.labels[index]}</figcaption></figure>)}</div>
-        <div className="space__controls"><button onClick={() => nextStoreImage(-1)} aria-label="Previous space">←</button><span>{String(storeIndex + 1).padStart(2, "0")} / {String(storeImages.length).padStart(2, "0")}</span><button onClick={() => nextStoreImage(1)} aria-label="Next space">→</button></div>
-      </section>
-
-      <section className="information light-section" id="information">
-        <RailTitle ja={t.info.rail} en={t.info.en} />
-        <BrandMark />
-        <dl>
-          <div><dt>{t.info.hours}</dt><dd>{t.info.hoursValue}</dd></div>
-          <div><dt>{t.info.closed}</dt><dd>{t.info.closedValue}</dd></div>
-          <div><dt>{t.info.tel}</dt><dd><a href="tel:+815031013945">050-3101-3945</a></dd></div>
-          <div><dt>{t.info.address}</dt><dd>{t.info.addressValue}<a className="map-link" href="https://www.google.com/maps/search/?api=1&query=東京都港区六本木7-13-9" target="_blank" rel="noreferrer">{t.info.map} ↗</a></dd></div>
-          <div><dt>{t.info.seats}</dt><dd>{t.info.seatsValue}</dd></div>
-        </dl>
+      <section className="store light-section" id="store">
+        <div className="store__gallery">
+          <div className="store__rail"><RailTitle ja={t.space.rail} en={t.space.en} /></div>
+          <div className="store__track">{storeSequence.map((index, position) => <figure key={`${index}-${position}-${storeIndex}`} className={position === 1 ? "is-current" : ""}><img src={`/images/real/${storeImages[index]}`} alt={t.space.labels[index]} loading="lazy" /></figure>)}</div>
+        </div>
+        <div className="store__information" id="information">
+          <BrandMark variant="vertical-en" className="store__logo" />
+          <dl>
+            <div><dt>{t.info.hours}</dt><dd>{t.info.hoursValue}</dd></div>
+            <div><dt>{t.info.closed}</dt><dd>{t.info.closedValue}</dd></div>
+            <div><dt>{t.info.tel}</dt><dd><a href="tel:+815031013945">050-3101-3945</a></dd></div>
+            <div><dt>{t.info.address}</dt><dd>{t.info.addressValue}<a className="map-link" href="https://www.google.com/maps/search/?api=1&query=東京都港区六本木7-13-9" target="_blank" rel="noreferrer">{t.info.map} ↗</a></dd></div>
+            <div><dt>{t.info.seats}</dt><dd>{t.info.seatsValue}</dd></div>
+          </dl>
+        </div>
       </section>
 
       <section className="reservation" id="reservation">
-        <RailTitle ja={t.reservation.rail} en={t.reservation.en} light />
-        <div className="reservation__main"><p>{t.reservation.site}</p><a className="reserve-button" href="https://restaurant.ikyu.com/149159" target="_blank" rel="noreferrer"><span>{t.reservation.button}</span><i>↗</i></a><details><summary>{t.reservation.notice}</summary><p>{t.reservation.rules}</p></details><small>{t.reservation.alternative} <a href="tel:+815031013945">050-3101-3945</a></small></div>
+        <div className="reservation__identity"><RailTitle ja={t.reservation.rail} en={t.reservation.en} light /><BrandMark tone="white" variant="vertical-en" /></div>
+        <div className="reservation__main"><p>{t.reservation.site}</p><h2>{t.reservation.button}</h2><a className="reserve-button" href="https://restaurant.ikyu.com/149159" target="_blank" rel="noreferrer"><span>IKYU RESTAURANT</span><i>↗</i></a><details><summary>{t.reservation.notice}</summary><p>{t.reservation.rules}</p></details><small>{t.reservation.alternative} <a href="tel:+815031013945">050-3101-3945</a></small></div>
       </section>
 
-      <footer id="footer"><BrandMark /><p>{t.footer.slogan}</p><div className="footer__languages">{(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => setLang(code)} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}</div><small>{t.footer.copyright}</small></footer>
+      <footer id="footer"><BrandMark variant="vertical" /><p>{t.footer.slogan}</p><div className="footer__languages">{(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => setLang(code)} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}</div><small>{t.footer.copyright}</small></footer>
       <a className="news-chip" href="#information">{t.footer.notice}</a>
     </main>
   );
