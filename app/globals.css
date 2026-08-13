@@ -61,6 +61,7 @@ img { display: block; width: 100%; }
 .hero__copy { position: relative; z-index: 2; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; padding: 90px 26px 0; animation: rise 1.3s ease both; }
 .hero h1 { margin: 0; font-size: clamp(38px, 4.7vw, 72px); font-weight: 300; line-height: 1.55; letter-spacing: .1em; }
 .hero h1 span { display: block; }
+.hero h1 span, .origin > h2 span, .philosophy > h2 span { white-space: nowrap; }
 .scroll-mark { position: absolute; right: clamp(30px, 5vw, 92px); bottom: 0; width: 2px; height: 155px; z-index: 3; overflow: hidden; background: rgba(255,255,255,.26); transition: opacity .55s ease, transform .55s ease; }
 .scroll-mark::after { content: ""; position: absolute; inset: 0; background: rgba(255,255,255,.95); transform: translateY(-105%); animation: scrollGuide 2.25s cubic-bezier(.55,.05,.35,1) infinite; }
 .scroll-mark.is-hidden { opacity: 0; transform: translateY(24px); pointer-events: none; }
@@ -76,12 +77,14 @@ img { display: block; width: 100%; }
 .origin { min-height: 900px; padding: clamp(145px, 16vw, 235px) clamp(35px, 8vw, 145px); display: grid; grid-template-columns: 120px 1.08fr .92fr; gap: clamp(46px, 6vw, 115px); align-items: center; border-bottom: 1px solid var(--line); }
 .origin > h2 { margin: 0; font-size: clamp(39px, 5.3vw, 76px); font-weight: 300; line-height: 1.7; letter-spacing: .05em; }
 .origin > h2 span { display: block; }
+.site--en .origin > h2 { font-size: clamp(27px, 2.5vw, 36px); line-height: 1.85; letter-spacing: .015em; }
 .origin__body { max-width: 550px; font-size: 14.5px; line-height: 2.65; letter-spacing: .055em; color: var(--soft-ink); }
 .origin__body p { margin: 0 0 32px; }
 
 .philosophy { min-height: 790px; padding: 135px clamp(35px, 8vw, 145px) 165px; display: grid; grid-template-columns: 145px .8fr 1.25fr; gap: clamp(45px, 6vw, 110px); align-items: center; background: var(--paper-warm); }
 .philosophy > h2 { margin: 0; color: #715c42; font-size: clamp(34px, 4.6vw, 65px); font-weight: 300; line-height: 1.75; letter-spacing: .05em; }
 .philosophy > h2 span { display: block; }
+.site--en .philosophy > h2 { font-size: clamp(30px, 3.7vw, 52px); line-height: 1.8; letter-spacing: .02em; }
 .philosophy__body { max-width: 650px; font-size: 14.5px; line-height: 2.6; letter-spacing: .05em; color: #706a63; }
 .philosophy__body p { margin: 0 0 34px; }
 .philosophy__body .is-highlight { color: var(--ink); }
@@ -212,15 +215,18 @@ footer > small { margin-top: 9px; font-size: 8px; letter-spacing: .08em; color: 
   .hero { min-height: 700px; }
   .hero > img { object-position: 43% center; }
   .hero h1 { font-size: 32px; letter-spacing: .06em; }
+  .site--en .hero h1 { font-size: clamp(24px, 7.4vw, 32px); letter-spacing: .025em; }
   .scroll-mark { height: 105px; }
   .rail-title { width: 52px; min-width: 52px; margin-bottom: 54px; }
   .rail-title i { height: 64px; margin-bottom: 25px; }
   .rail-title h2 { font-size: 18px; }
   .origin { min-height: auto; padding: 115px 25px 135px; display: block; }
   .origin > h2 { font-size: 35px; margin-bottom: 55px; line-height: 1.75; }
+  .site--en .origin > h2 { font-size: clamp(17px, 5.5vw, 30px); line-height: 2; letter-spacing: .01em; }
   .origin__body { font-size: 13.5px; line-height: 2.4; }
   .philosophy { min-height: auto; padding: 115px 25px 135px; display: block; }
   .philosophy > h2 { font-size: 31px; margin: 0 0 48px; }
+  .site--en .philosophy > h2 { font-size: clamp(25px, 7vw, 31px); line-height: 1.9; }
   .philosophy__body { font-size: 13.5px; line-height: 2.35; }
   .cuisine { min-height: 100svh; padding: 100px 16px 35px; }
   .cuisine__layout { width: 100%; grid-template-columns: 46px minmax(0, 1fr); gap: 14px; }

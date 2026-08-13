@@ -86,10 +86,13 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /\.rail-title i \{[^}]*width: 1px;[^}]*height: 80px;[^}]*margin-bottom: 34px;/s);
   assert.match(css, /\.rail-title h2 \{[^}]*flex-direction: column;[^}]*gap: 3px;/s);
   assert.match(source, /characters\.map\(\(character, index\)/);
+  assert.match(source, /className=\{`site site--\$\{lang\}`\}/);
   assert.match(source, /上海蟹味噌ふかひれ/);
   assert.match(source, /松茸と牛尾のスープ/);
   assert.match(source, /栗・海鮮・鶏肉の炒飯/);
   assert.match(css, /\.cuisine \{[^}]*min-height: 100svh;/s);
+  assert.match(css, /\.hero h1 span, \.origin > h2 span, \.philosophy > h2 span \{ white-space: nowrap; \}/);
+  assert.match(css, /\.site--en \.origin > h2 \{[^}]*font-size: clamp\(27px, 2\.5vw, 36px\);/s);
   assert.match(css, /\.cuisine__layout \{[^}]*grid-template-columns:/s);
   assert.match(css, /\.cuisine__rail \{[^}]*flex-direction: column;/s);
   assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.94;/s);

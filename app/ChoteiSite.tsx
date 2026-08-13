@@ -195,7 +195,7 @@ export default function ChoteiSite() {
   const closeNotice = () => { setNoticeOpen(false); window.requestAnimationFrame(() => noticeTriggerRef.current?.focus()); };
 
   return (
-    <main id="top">
+    <main id="top" className={`site site--${lang}`}>
       <header className={`site-header ${headerScrolled ? "is-scrolled" : ""}`}>
         <BrandMark tone="black" />
         <nav className="desktop-nav" aria-label="Primary navigation">{["origin", "cuisine", "menus", "store", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}</nav>
