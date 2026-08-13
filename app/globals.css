@@ -87,11 +87,12 @@ img { display: block; width: 100%; }
 .philosophy__body .is-highlight { color: var(--ink); }
 
 .cuisine { min-height: 100svh; padding: 118px clamp(28px, 5vw, 84px) 56px; position: relative; display: flex; align-items: center; }
-.cuisine > .rail-title { position: absolute; z-index: 2; left: clamp(28px, 5vw, 84px); top: 128px; }
 .cuisine__layout { width: min(1320px, calc(100vw - 12vw)); margin: 0 auto; display: grid; grid-template-columns: clamp(78px, 8vw, 118px) minmax(0, 1fr); gap: clamp(34px, 5vw, 78px); align-items: center; }
-.season-tabs { height: min(70svh, 720px); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: clamp(24px, 4.2vh, 48px); }
-.season-tabs button { min-width: 4.5em; padding: 8px 0; background: transparent; font-size: 16px; font-weight: 300; letter-spacing: .14em; text-align: left; color: #827c74; transition: color .35s ease, transform .35s ease; }
-.season-tabs button.is-active { color: var(--ink); transform: translateX(12px); }
+.cuisine__rail { min-height: min(70svh, 720px); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: clamp(52px, 6vh, 82px); }
+.cuisine__rail .rail-title { margin: 0; }
+.season-tabs { display: flex; flex-direction: column; align-items: center; gap: clamp(22px, 3.4vh, 38px); }
+.season-tabs button { min-width: 3em; padding: 8px 0; background: transparent; font-size: 16px; font-weight: 300; letter-spacing: .14em; text-align: center; color: #827c74; transition: color .35s ease, transform .35s ease; }
+.season-tabs button.is-active { color: var(--ink); transform: translateX(7px); }
 .cuisine__stage { position: relative; width: min(100%, 1120px, calc((100svh - 174px) * 1.55)); aspect-ratio: 1.55 / 1; margin: 0; justify-self: center; overflow: hidden; background: #151412; }
 .cuisine__stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.012); transition: opacity 1.65s ease, transform 6s ease; }
 .cuisine__stage img.is-active { opacity: 1; transform: scale(1); }
@@ -100,12 +101,12 @@ img { display: block; width: 100%; }
 .menus__heading { padding: 0 clamp(32px, 7vw, 120px) 82px; display: grid; grid-template-columns: 1fr 1fr; gap: 8vw; align-items: center; }
 .menus__heading > p { margin: 0; max-width: 560px; font-size: 16px; line-height: 2; letter-spacing: .075em; color: var(--ink); }
 .priced-courses { height: clamp(500px, 54vw, 740px); padding: 0 clamp(20px, 3vw, 52px); display: flex; gap: 3px; overflow: hidden; }
-.priced-course { min-width: 0; padding: 0; flex: 1 1 0; display: grid; grid-template-rows: minmax(0, 1fr) 92px; overflow: hidden; text-align: center; background: transparent; transition: flex-grow 1.2s cubic-bezier(.16,1,.3,1); will-change: flex-grow; }
-.priced-courses:hover .priced-course { flex-grow: .72; }
-.priced-courses .priced-course:hover { flex-grow: 1.75; }
+.priced-course { min-width: 0; padding: 0; flex: 1 1 0; display: grid; grid-template-rows: minmax(0, 1fr) 92px; overflow: hidden; text-align: center; background: transparent; transition: flex-grow 1.15s cubic-bezier(.16,1,.3,1); }
+.priced-courses:hover .priced-course { flex-grow: .94; }
+.priced-courses .priced-course:hover { flex-grow: 1.18; }
 .priced-course__image { display: block; min-height: 0; overflow: hidden; background: #161411; }
-.priced-course__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.78); transform: scale(1.01); transition: filter .8s ease, transform 1.25s cubic-bezier(.16,1,.3,1); }
-.priced-course:hover .priced-course__image img { filter: saturate(.96); transform: scale(1.035); }
+.priced-course__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.78); transform: scale(1.005); transition: filter .8s ease, transform 1.25s cubic-bezier(.16,1,.3,1); }
+.priced-course:hover .priced-course__image img { filter: saturate(.92); transform: scale(1.018); }
 .priced-course > b { padding: 26px 10px 12px; font-size: clamp(17px, 1.7vw, 24px); font-weight: 300; letter-spacing: .06em; }
 .special-courses { width: min(980px, 90vw); margin: 105px auto 0; text-align: center; }
 .special-courses h3 { margin: 0 0 40px; font-size: 18px; font-weight: 300; letter-spacing: .1em; }
@@ -131,16 +132,16 @@ img { display: block; width: 100%; }
 .store__information dd a:hover { font-weight: 300; }
 .map-link { display: block; width: fit-content; margin: 13px auto 0; font-size: 11px; font-weight: 300; letter-spacing: .06em; color: #806d54; }
 
-.reservation { min-height: 680px; display: grid; grid-template-columns: 38% 62%; color: var(--ink); background: var(--reservation-gold); }
-.reservation__identity { padding: 105px clamp(35px, 7vw, 110px); display: flex; justify-content: center; align-items: center; border-right: 1px solid rgba(24,23,20,.2); }
+.reservation { min-height: 680px; position: relative; display: grid; place-items: center; color: var(--ink); background: var(--reservation-gold); }
+.reservation__identity { position: absolute; left: clamp(45px, 8vw, 145px); top: 50%; padding: 0; transform: translateY(-50%); }
 .reservation__identity .rail-title { margin: 0; }
-.reservation__main { padding: 125px clamp(45px, 10vw, 165px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-.reservation__main > h2 { margin: 0 0 38px; font-size: clamp(34px, 4vw, 56px); font-weight: 300; line-height: 1.5; letter-spacing: .08em; }
+.reservation__main { width: min(480px, 72vw); padding: 105px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.reservation__main > h2 { margin: 0 0 34px; font-size: 17px; font-weight: 300; line-height: 1.7; letter-spacing: .14em; }
 .reserve-button { width: min(440px, 100%); padding: 21px 24px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(24,23,20,.58); font-size: 14px; font-weight: 300; letter-spacing: .1em; transition: color .35s ease, background .35s ease; }
 .reserve-button:hover { color: var(--reservation-gold); background: var(--ink); }
 .reserve-button i { font-style: normal; font-size: 15px; }
-.customer-notice-button { width: min(440px, 100%); min-height: 84px; margin-top: 28px; padding: 21px 27px; display: flex; align-items: center; justify-content: space-between; color: var(--ink); border: 1px solid rgba(24,23,20,.38); background: rgba(255,255,255,.08); font-size: 15px; letter-spacing: .12em; transition: color .35s ease, background .35s ease, border-color .35s ease; }
-.customer-notice-button:hover { color: var(--reservation-gold); border-color: var(--ink); background: var(--ink); }
+.customer-notice-button { width: fit-content; min-height: 0; margin-top: 78px; padding: 10px 2px 7px; display: flex; align-items: center; gap: 18px; color: var(--ink); border-bottom: 1px solid rgba(24,23,20,.48); background: transparent; font-size: 15px; letter-spacing: .12em; transition: opacity .35s ease; }
+.customer-notice-button:hover { opacity: .58; }
 .customer-notice-button i { font-style: normal; font-size: 18px; line-height: 1; }
 
 footer { min-height: 390px; padding: 80px 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; text-align: center; background: var(--paper); }
@@ -220,9 +221,9 @@ footer > small { margin-top: 9px; font-size: 8px; letter-spacing: .08em; color: 
   .philosophy > h2 { font-size: 31px; margin: 0 0 48px; }
   .philosophy__body { font-size: 13.5px; line-height: 2.35; }
   .cuisine { min-height: 100svh; padding: 100px 16px 35px; }
-  .cuisine > .rail-title { top: 105px; left: 20px; }
-  .cuisine__layout { width: 100%; padding-top: 64px; grid-template-columns: 46px minmax(0, 1fr); gap: 14px; }
-  .season-tabs { height: auto; gap: 13px; align-items: flex-start; }
+  .cuisine__layout { width: 100%; grid-template-columns: 46px minmax(0, 1fr); gap: 14px; }
+  .cuisine__rail { min-height: 0; gap: 42px; }
+  .season-tabs { gap: 13px; align-items: center; }
   .season-tabs button { min-width: 0; padding: 5px 0; font-size: 12px; letter-spacing: .08em; }
   .season-tabs button.is-active { transform: translateX(5px); }
   .cuisine__stage { width: 100%; aspect-ratio: 1.1 / 1; }
@@ -246,11 +247,11 @@ footer > small { margin-top: 9px; font-size: 8px; letter-spacing: .08em; color: 
   .store__information dt { font-size: 13px; gap: 14px; }
   .store__information dt::before, .store__information dt::after { width: 26px; }
   .store__information dd { font-size: 12px; letter-spacing: .045em; }
-  .reservation { grid-template-columns: 1fr; }
-  .reservation__identity { min-height: 235px; padding: 68px 25px 30px; border: 0; }
-  .reservation__main { padding: 45px 25px 100px; }
-  .reservation__main > h2 { font-size: 34px; }
-  .customer-notice-button { min-height: 72px; margin-top: 54px; padding: 18px 21px; font-size: 13px; }
+  .reservation { min-height: 720px; display: flex; flex-direction: column; justify-content: center; }
+  .reservation__identity { position: static; min-height: 0; padding: 0 25px 58px; transform: none; }
+  .reservation__main { width: min(440px, 100%); padding: 0 25px 70px; }
+  .reservation__main > h2 { font-size: 15px; }
+  .customer-notice-button { margin-top: 60px; padding: 10px 2px 7px; font-size: 13px; }
   .course-modal { padding: 14px; }
   .course-modal article { grid-template-columns: 1fr; max-height: 92vh; }
   .course-modal__image { min-height: 0; height: 40vh; }

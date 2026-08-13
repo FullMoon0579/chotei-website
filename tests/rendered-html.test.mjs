@@ -31,7 +31,7 @@ test("server-renders the finished CHOTEI site", async () => {
   assert.match(html, /id="reservation"/);
   assert.match(html, /twitter:card/);
   assert.match(html, /og\.webp/);
-  assert.match(html, /images\/real\/hero-counter\.webp/);
+  assert.match(html, /images\/real\/hero-private-dining\.webp/);
   assert.match(html, /images\/brand\/logo-new-black\.webp/);
   assert.match(html, /images\/brand\/logo-vertical-black\.webp/);
   assert.match(html, /ふかひれコース/);
@@ -63,7 +63,7 @@ test("includes accessible navigation and primary actions", async () => {
   assert.match(html, /お客様へのお知らせ/);
   assert.match(html, /href="https:\/\/www\.google\.com\/maps\/place\/%E9%95%B7%E4%BA%AD\+CHOTEI\//);
   assert.match(html, /href="tel:\+815031013945"/);
-  assert.match(html, /alt="長亭のカウンター席"/);
+  assert.match(html, /alt="長亭の個室"/);
 });
 
 test("uses the refined Mincho font, notice modal, and animated scroll guide", async () => {
@@ -86,14 +86,20 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /\.rail-title i \{[^}]*width: 1px;[^}]*height: 80px;[^}]*margin-bottom: 34px;/s);
   assert.match(css, /\.rail-title h2 \{[^}]*flex-direction: column;[^}]*gap: 3px;/s);
   assert.match(source, /characters\.map\(\(character, index\)/);
+  assert.match(source, /上海蟹味噌ふかひれ/);
+  assert.match(source, /松茸と牛尾のスープ/);
+  assert.match(source, /栗・海鮮・鶏肉の炒飯/);
   assert.match(css, /\.cuisine \{[^}]*min-height: 100svh;/s);
   assert.match(css, /\.cuisine__layout \{[^}]*grid-template-columns:/s);
-  assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.72;/s);
-  assert.match(css, /\.priced-courses \.priced-course:hover \{[^}]*flex-grow: 1\.75;/s);
+  assert.match(css, /\.cuisine__rail \{[^}]*flex-direction: column;/s);
+  assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.94;/s);
+  assert.match(css, /\.priced-courses \.priced-course:hover \{[^}]*flex-grow: 1\.18;/s);
   assert.match(css, /animation: storeCarousel 27s/);
   assert.doesNotMatch(css, /mix-blend-mode/);
   assert.match(css, /@keyframes storeCarousel/);
   assert.match(css, /--reservation-gold: #c8ae62;/);
+  assert.match(css, /\.reservation \{[^}]*place-items: center;/s);
+  assert.doesNotMatch(css, /\.reservation__identity[^}]*border-right/);
   assert.match(source, /loading="eager" decoding="async"/);
   assert.doesNotMatch(source, /reservation__identity"><RailTitle[^\n]*BrandMark/);
   assert.doesNotMatch(source, /storeSlide|storeAnimating|CSSProperties/);
