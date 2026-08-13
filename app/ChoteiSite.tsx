@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- restaurant and logo assets are pre-sized WebP files */
+/* eslint-disable @next/next/no-img-element -- restaurant and logo assets are pre-sized media files */
 
 import { useEffect, useRef, useState } from "react";
 
@@ -16,7 +16,7 @@ const seasonalImages: Record<Season, string[]> = {
 };
 
 const premiumCourseImages = ["winter-fukahire.webp", "premium-abalone.webp", "winter-soup.webp", "menu-premium.webp"];
-const basicCourseImages = ["menu-lunch.webp", "menu-standard.webp", "menu-seasonal.webp", "autumn-matsutake.webp"];
+const basicCourseImages = ["course-3980.jpg", "course-8800.jpg", "course-13200.jpg", "course-19800.jpg"];
 const storeImages = ["space-entrance.webp", "space-dining-1.webp", "space-dining-2.webp", "space-dining-3.webp", "space-dining-4.webp", "space-private.webp"];
 const storeSequence = [...storeImages, storeImages[0]];
 const mapUrl = "https://www.google.com/maps/place/%E9%95%B7%E4%BA%AD+CHOTEI/@35.6636563,139.7256698,16.89z/data=!3m1!5s0x60188b7840b89495:0xdccd41a44c51eac2!4m6!3m5!1s0x60188b9febc424b5:0xad79b9012c244206!8m2!3d35.663729!4d139.730426!16s%2Fg%2F11xklmrgxx?entry=ttu&g_ep=EgoyMDI2MDgwMi4wIKXMDSoASAFQAw%3D%3D";
@@ -137,7 +137,8 @@ function BrandMark({ tone = "black", variant = "horizontal", className = "" }: {
 }
 
 function RailTitle({ label, light = false }: { label: string; light?: boolean }) {
-  return <div className={`rail-title ${light ? "rail-title--light" : ""}`}><i /><h2>{label}</h2></div>;
+  const characters = /[\u3040-\u30ff\u3400-\u9fff]/.test(label) ? Array.from(label.replace(/\s/g, "")) : null;
+  return <div className={`rail-title ${light ? "rail-title--light" : ""}`}><i /><h2 className={characters ? undefined : "rail-title__latin"} aria-label={label}>{characters ? characters.map((character, index) => <span aria-hidden="true" key={`${character}-${index}`}>{character}</span>) : label}</h2></div>;
 }
 
 export default function ChoteiSite() {
@@ -257,7 +258,7 @@ export default function ChoteiSite() {
       </section>
 
       <section className="reservation" id="reservation">
-        <div className="reservation__identity"><RailTitle label={t.reservation.rail} /><BrandMark variant="vertical" /></div>
+        <div className="reservation__identity"><RailTitle label={t.reservation.rail} /></div>
         <div className="reservation__main"><h2>{t.reservation.button}</h2><a className="reserve-button" href="https://restaurant.ikyu.com/149159" target="_blank" rel="noreferrer"><span>{t.reservation.button}</span><i>↗</i></a><button type="button" ref={noticeTriggerRef} className="customer-notice-button" onClick={() => setNoticeOpen(true)}><span>{t.reservation.customerNotice}</span><i>＋</i></button></div>
       </section>
 

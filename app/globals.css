@@ -68,7 +68,9 @@ img { display: block; width: 100%; }
 .light-section { background: var(--paper); }
 .rail-title { width: 68px; min-width: 68px; display: flex; flex-direction: column; align-items: center; color: #090908; }
 .rail-title i { display: block; width: 1px; height: 80px; margin-bottom: 34px; background: currentColor; opacity: .86; }
-.rail-title h2 { margin: 0; font-size: 22px; font-weight: 300; line-height: 1.35; letter-spacing: .08em; writing-mode: vertical-rl; }
+.rail-title h2 { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 22px; font-weight: 300; line-height: 1; letter-spacing: 0; }
+.rail-title h2 span { display: block; }
+.rail-title h2.rail-title__latin { display: block; line-height: 1.25; letter-spacing: .08em; writing-mode: vertical-rl; }
 .rail-title--light { color: white; }
 
 .origin { min-height: 900px; padding: clamp(145px, 16vw, 235px) clamp(35px, 8vw, 145px); display: grid; grid-template-columns: 120px 1.08fr .92fr; gap: clamp(46px, 6vw, 115px); align-items: center; border-bottom: 1px solid var(--line); }
@@ -98,12 +100,12 @@ img { display: block; width: 100%; }
 .menus__heading { padding: 0 clamp(32px, 7vw, 120px) 82px; display: grid; grid-template-columns: 1fr 1fr; gap: 8vw; align-items: center; }
 .menus__heading > p { margin: 0; max-width: 560px; font-size: 16px; line-height: 2; letter-spacing: .075em; color: var(--ink); }
 .priced-courses { height: clamp(500px, 54vw, 740px); padding: 0 clamp(20px, 3vw, 52px); display: flex; gap: 3px; overflow: hidden; }
-.priced-course { min-width: 0; padding: 0; flex: 1 1 0; display: grid; grid-template-rows: minmax(0, 1fr) 92px; overflow: hidden; text-align: center; background: transparent; transition: flex-grow .85s cubic-bezier(.2,.7,.18,1); }
-.priced-courses:hover .priced-course { flex-grow: .65; }
-.priced-courses .priced-course:hover { flex-grow: 1.9; }
+.priced-course { min-width: 0; padding: 0; flex: 1 1 0; display: grid; grid-template-rows: minmax(0, 1fr) 92px; overflow: hidden; text-align: center; background: transparent; transition: flex-grow 1.2s cubic-bezier(.16,1,.3,1); will-change: flex-grow; }
+.priced-courses:hover .priced-course { flex-grow: .72; }
+.priced-courses .priced-course:hover { flex-grow: 1.75; }
 .priced-course__image { display: block; min-height: 0; overflow: hidden; background: #161411; }
-.priced-course__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.78); transform: scale(1.015); transition: filter .6s ease, transform .95s cubic-bezier(.2,.7,.18,1); }
-.priced-course:hover .priced-course__image img { filter: saturate(.96); transform: scale(1.045); }
+.priced-course__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.78); transform: scale(1.01); transition: filter .8s ease, transform 1.25s cubic-bezier(.16,1,.3,1); }
+.priced-course:hover .priced-course__image img { filter: saturate(.96); transform: scale(1.035); }
 .priced-course > b { padding: 26px 10px 12px; font-size: clamp(17px, 1.7vw, 24px); font-weight: 300; letter-spacing: .06em; }
 .special-courses { width: min(980px, 90vw); margin: 105px auto 0; text-align: center; }
 .special-courses h3 { margin: 0 0 40px; font-size: 18px; font-weight: 300; letter-spacing: .1em; }
@@ -112,13 +114,13 @@ img { display: block; width: 100%; }
 .special-courses button:hover { color: #5c4b31; background: rgba(200, 174, 98, .18); }
 
 .store { position: relative; overflow: hidden; }
-.store__gallery { position: relative; padding: 160px 0 0; }
-.store__rail { position: absolute; z-index: 4; top: 72px; left: clamp(30px, 6vw, 105px); height: 270px; }
-.store__rail .rail-title { height: 100%; color: rgba(255,255,255,.78); mix-blend-mode: difference; }
+.store__gallery { position: relative; padding: 260px 0 0; }
+.store__rail { position: absolute; z-index: 4; top: 58px; left: clamp(30px, 6vw, 105px); }
+.store__rail .rail-title { margin: 0; }
 .store__viewport { width: 100%; height: min(39vw, 610px); min-height: 470px; overflow: hidden; }
-.store__track { display: flex; width: max-content; height: 100%; transform: translate3d(24vw, 0, 0); animation: storeCarousel 15s cubic-bezier(.55,.08,.25,1) infinite; }
+.store__track { display: flex; width: max-content; height: 100%; transform: translate3d(24vw, 0, 0); animation: storeCarousel 27s cubic-bezier(.55,.08,.25,1) infinite; will-change: transform; }
 .store__track figure { flex: 0 0 52vw; height: 100%; margin: 0; overflow: hidden; box-shadow: inset -2px 0 0 white; background: #16120f; }
-.store__track img { width: 100%; height: 100%; object-fit: cover; }
+.store__track img { width: 100%; height: 100%; object-fit: cover; transform: translateZ(0); }
 .store__information { min-height: 1000px; padding: 150px 30px 175px; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .store__logo { width: 46px; height: 118px; margin-bottom: 68px; }
 .store__information dl { width: min(690px, 91vw); margin: 0; }
@@ -130,9 +132,9 @@ img { display: block; width: 100%; }
 .map-link { display: block; width: fit-content; margin: 13px auto 0; font-size: 11px; font-weight: 300; letter-spacing: .06em; color: #806d54; }
 
 .reservation { min-height: 680px; display: grid; grid-template-columns: 38% 62%; color: var(--ink); background: var(--reservation-gold); }
-.reservation__identity { padding: 105px clamp(35px, 7vw, 110px); display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; border-right: 1px solid rgba(24,23,20,.2); }
-.reservation__identity > .brand { align-self: center; width: 44px; height: 113px; margin: 50px 0 30px; }
-.reservation__main { padding: 125px clamp(45px, 10vw, 165px); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.reservation__identity { padding: 105px clamp(35px, 7vw, 110px); display: flex; justify-content: center; align-items: center; border-right: 1px solid rgba(24,23,20,.2); }
+.reservation__identity .rail-title { margin: 0; }
+.reservation__main { padding: 125px clamp(45px, 10vw, 165px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 .reservation__main > h2 { margin: 0 0 38px; font-size: clamp(34px, 4vw, 56px); font-weight: 300; line-height: 1.5; letter-spacing: .08em; }
 .reserve-button { width: min(440px, 100%); padding: 21px 24px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(24,23,20,.58); font-size: 14px; font-weight: 300; letter-spacing: .1em; transition: color .35s ease, background .35s ease; }
 .reserve-button:hover { color: var(--reservation-gold); background: var(--ink); }
@@ -234,8 +236,8 @@ footer > small { margin-top: 9px; font-size: 8px; letter-spacing: .08em; color: 
   .special-courses h3 { margin-bottom: 28px; font-size: 16px; }
   .special-courses > div { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .special-courses button { min-height: 68px; padding: 14px 5px; font-size: 15px; }
-  .store__gallery { padding-top: 120px; }
-  .store__rail { position: absolute; top: 56px; left: 20px; height: 220px; padding: 0; }
+  .store__gallery { padding-top: 210px; }
+  .store__rail { position: absolute; top: 42px; left: 20px; padding: 0; }
   .store__viewport { min-height: 0; height: 68vw; }
   .store__track { transform: translate3d(0, 0, 0); animation-name: storeCarouselMobile; }
   .store__track figure { flex-basis: 100vw; box-shadow: none; }
@@ -245,9 +247,8 @@ footer > small { margin-top: 9px; font-size: 8px; letter-spacing: .08em; color: 
   .store__information dt::before, .store__information dt::after { width: 26px; }
   .store__information dd { font-size: 12px; letter-spacing: .045em; }
   .reservation { grid-template-columns: 1fr; }
-  .reservation__identity { min-height: 300px; padding: 80px 25px 30px; border: 0; }
-  .reservation__identity > .brand { width: 36px; height: 93px; margin: 0 auto 25px; }
-  .reservation__main { padding: 55px 25px 100px; }
+  .reservation__identity { min-height: 235px; padding: 68px 25px 30px; border: 0; }
+  .reservation__main { padding: 45px 25px 100px; }
   .reservation__main > h2 { font-size: 34px; }
   .customer-notice-button { min-height: 72px; margin-top: 54px; padding: 18px 21px; font-size: 13px; }
   .course-modal { padding: 14px; }
