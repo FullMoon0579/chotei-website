@@ -78,11 +78,15 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /\.notice-modal > article \{[^}]*overflow-y: auto;/s);
   assert.match(css, /@keyframes scrollGuide/);
   assert.match(css, /\.scroll-mark\.is-hidden/);
-  assert.match(css, /\.rail-title i \{[^}]*width: 3px;[^}]*height: 96px;[^}]*transform: translateY\(-28px\);/s);
+  assert.match(css, /\.rail-title \{[^}]*flex-direction: column;[^}]*align-items: center;/s);
+  assert.match(css, /\.rail-title i \{[^}]*width: 1px;[^}]*height: 80px;[^}]*margin-bottom: 34px;/s);
   assert.match(css, /\.cuisine \{[^}]*min-height: 100svh;/s);
   assert.match(css, /\.cuisine__layout \{[^}]*grid-template-columns:/s);
-  assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.9;/s);
+  assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.65;/s);
+  assert.match(css, /\.priced-courses \.priced-course:hover \{[^}]*flex-grow: 1\.9;/s);
+  assert.match(css, /\.store__rail \.rail-title \{[^}]*mix-blend-mode: difference;/s);
+  assert.match(css, /@keyframes storeCarousel/);
   assert.match(css, /--reservation-gold: #c8ae62;/);
   assert.match(source, /loading="eager" decoding="async"/);
-  assert.match(source, /setStoreSlide\(value => value >= storeImages\.length \+ 1 \? value : value \+ 1\)/);
+  assert.doesNotMatch(source, /storeSlide|storeAnimating|CSSProperties/);
 });

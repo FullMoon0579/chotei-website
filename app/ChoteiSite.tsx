@@ -2,7 +2,6 @@
 
 /* eslint-disable @next/next/no-img-element -- restaurant and logo assets are pre-sized WebP files */
 
-import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 
 type Lang = "ja" | "en" | "zh";
@@ -19,7 +18,7 @@ const seasonalImages: Record<Season, string[]> = {
 const premiumCourseImages = ["winter-fukahire.webp", "premium-abalone.webp", "winter-soup.webp", "menu-premium.webp"];
 const basicCourseImages = ["menu-lunch.webp", "menu-standard.webp", "menu-seasonal.webp", "autumn-matsutake.webp"];
 const storeImages = ["space-entrance.webp", "space-dining-1.webp", "space-dining-2.webp", "space-dining-3.webp", "space-dining-4.webp", "space-private.webp"];
-const storeSlides = [storeImages[storeImages.length - 1], ...storeImages, storeImages[0]];
+const storeSequence = [...storeImages, storeImages[0]];
 const mapUrl = "https://www.google.com/maps/place/%E9%95%B7%E4%BA%AD+CHOTEI/@35.6636563,139.7256698,16.89z/data=!3m1!5s0x60188b7840b89495:0xdccd41a44c51eac2!4m6!3m5!1s0x60188b9febc424b5:0xad79b9012c244206!8m2!3d35.663729!4d139.730426!16s%2Fg%2F11xklmrgxx?entry=ttu&g_ep=EgoyMDI2MDgwMi4wIKXMDSoASAFQAw%3D%3D";
 
 const copy = {
@@ -146,8 +145,6 @@ export default function ChoteiSite() {
   const [season, setSeason] = useState<Season>("spring");
   const [seasonIndex, setSeasonIndex] = useState(0);
   const [headerScrolled, setHeaderScrolled] = useState(false);
-  const [storeSlide, setStoreSlide] = useState(1);
-  const [storeAnimating, setStoreAnimating] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<CourseSelection | null>(null);
   const [noticeOpen, setNoticeOpen] = useState(false);
   const noticeTriggerRef = useRef<HTMLButtonElement>(null);
@@ -170,27 +167,6 @@ export default function ChoteiSite() {
     const timer = window.setInterval(() => setSeasonIndex(value => (value + 1) % activeSeasonImages.length), 4600);
     return () => window.clearInterval(timer);
   }, [season, activeSeasonImages.length]);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = window.setInterval(() => setStoreSlide(value => value >= storeImages.length + 1 ? value : value + 1), 2500);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    if (storeSlide !== storeImages.length + 1) return;
-    const fallback = window.setTimeout(() => {
-      setStoreAnimating(false);
-      setStoreSlide(1);
-    }, 1100);
-    return () => window.clearTimeout(fallback);
-  }, [storeSlide]);
-
-  useEffect(() => {
-    if (storeAnimating) return;
-    const frame = window.requestAnimationFrame(() => setStoreAnimating(true));
-    return () => window.cancelAnimationFrame(frame);
-  }, [storeAnimating]);
 
   useEffect(() => {
     if (!selectedCourse && !noticeOpen) return;
@@ -263,8 +239,8 @@ export default function ChoteiSite() {
         <div className="store__gallery">
           <div className="store__rail"><RailTitle label={t.space.rail} /></div>
           <div className="store__viewport">
-            <div className={`store__track ${storeAnimating ? "is-animating" : ""}`} style={{ "--store-index": storeSlide } as CSSProperties} onTransitionEnd={event => { if (event.target === event.currentTarget && storeSlide === storeImages.length + 1) { setStoreAnimating(false); setStoreSlide(1); } }}>
-              {storeSlides.map((image, index) => <figure key={`${image}-${index}`}><img src={`/images/real/${image}`} alt={t.space.labels[(index - 1 + storeImages.length) % storeImages.length]} loading="eager" decoding="async" /></figure>)}
+            <div className="store__track">
+              {storeSequence.map((image, index) => <figure key={`${image}-${index}`}><img src={`/images/real/${image}`} alt={t.space.labels[index % storeImages.length]} loading="eager" decoding="async" /></figure>)}
             </div>
           </div>
         </div>
