@@ -52,15 +52,26 @@ test("includes accessible navigation and primary actions", async () => {
   assert.match(html, /href="#store"/);
   assert.match(html, /href="#reservation"/);
   assert.match(html, /href="https:\/\/restaurant\.ikyu\.com\/149159"/);
+  assert.match(html, /お客様へのお知らせ/);
   assert.match(html, /href="https:\/\/www\.google\.com\/maps\/place\/%E9%95%B7%E4%BA%AD\+CHOTEI\//);
   assert.match(html, /href="tel:\+815031013945"/);
   assert.match(html, /alt="長亭のカウンター席"/);
 });
 
-test("uses the requested brand font and animated scroll guide", async () => {
+test("uses the refined Mincho font, notice modal, and animated scroll guide", async () => {
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
-  assert.match(css, /KleeOne-SemiBold\.woff2/);
-  assert.match(css, /font-weight: 600/);
+  const source = await readFile(new URL("../app/ChoteiSite.tsx", import.meta.url), "utf8");
+  const font = await readFile(new URL("../public/fonts/ShipporiMincho-Regular.woff2", import.meta.url));
+  assert.match(css, /ShipporiMincho-Regular\.woff2/);
+  assert.match(css, /font-family: "Shippori Mincho"/);
+  assert.match(css, /font-weight: 300/);
+  assert.ok(font.byteLength > 100_000);
+  assert.match(source, /className="customer-notice-button"/);
+  assert.match(source, /className="notice-modal" role="dialog" aria-modal="true"/);
+  assert.match(source, /ご来店時のお願い/);
+  assert.match(source, /ドレスコードについて/);
+  assert.match(source, /ご予約方法についてのお知らせ/);
+  assert.match(css, /\.notice-modal > article \{[^}]*overflow-y: auto;/s);
   assert.match(css, /@keyframes scrollGuide/);
   assert.match(css, /\.scroll-mark\.is-hidden/);
   assert.match(css, /\.rail-title i \{[^}]*width: 2px;[^}]*height: 84px;/s);

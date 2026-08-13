@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element -- restaurant and logo assets are pre-sized WebP files */
 
 import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Lang = "ja" | "en" | "zh";
 type Season = "spring" | "summer" | "autumn" | "winter";
@@ -47,7 +47,15 @@ const copy = {
     },
     space: { rail: "店舗", labels: ["入口", "カウンター", "ダイニング", "テーブル席", "主室", "個室"] },
     info: { hours: "営業時間", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "定休日", closedValue: "日曜日・不定休", tel: "電話番号", address: "住所", addressValue: "〒106-0032 東京都港区六本木7-13-9 1F", seats: "座席数", seatsValue: "カウンター 4席 / 個室 6室", map: "地図・アクセス" },
-    reservation: { rail: "ご予約", site: "予約サイト", button: "予約", notice: "予約時のお願い", rules: "アレルギー、お子様の同伴、遅刻などは事前に店舗へお知らせください。キャンセル規定は予約サイトでご確認ください。", alternative: "空席が見つからない場合は、お電話にてお問い合わせください。" },
+    reservation: {
+      rail: "ご予約", site: "予約サイト", button: "予約", notice: "予約時のお願い", rules: "アレルギー、お子様の同伴、遅刻などは事前に店舗へお知らせください。キャンセル規定は予約サイトでご確認ください。", alternative: "空席が見つからない場合は、お電話にてお問い合わせください。",
+      customerNotice: "お客様へのお知らせ", close: "閉じる",
+      guidance: [
+        { title: "ご来店時のお願い", paragraphs: ["ご予約当日のお帰りの時間（飛行機などの交通機関）にお決まりのある方は、事前にお問い合わせくださいますようお願いいたします。当日や直前のお申し出の場合、ご希望に添えない場合がございます。", "ご予約時間より30分以上遅れてご来店される場合、その時点からのお料理のご提供となります。また、途中退店される場合、コースの一部をお出しできない可能性もございますので、ご了承くださいませ。"] },
+        { title: "ドレスコードについて", paragraphs: ["過度な軽装でのご来店はお控えいただいております。", "また、過度な香水をお付けになっている場合、ご入店をお断りする場合がございます。"] },
+        { title: "ご予約方法についてのお知らせ", paragraphs: ["当店では「Peccotter（ペコッター）」「Auto Reserve（オートリザーブ）」「グルメリザーブ」など、当店がご案内していない予約代行サービスからのご予約は、日程・時間帯を問わず受け付けておりません。", "当サイトからご案内する一休レストラン、または店舗への直接のお問い合わせをご利用ください。予約代行サービス経由と判明した場合、ご予約を取り消す場合がございます。"] },
+      ],
+    },
     footer: { notice: "お知らせ", copyright: "© 2026 CHOTEI. All rights reserved." },
   },
   en: {
@@ -74,7 +82,15 @@ const copy = {
     },
     space: { rail: "Store", labels: ["Entrance", "Counter", "Dining room", "Table seating", "Main room", "Private room"] },
     info: { hours: "Hours", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "Closed", closedValue: "Sundays and irregular holidays", tel: "Telephone", address: "Address", addressValue: "1F, 7-13-9 Roppongi, Minato-ku, Tokyo 106-0032", seats: "Seating", seatsValue: "4 counter seats / 6 private rooms", map: "Map & directions" },
-    reservation: { rail: "Reserve", site: "Reservation site", button: "Reserve", notice: "Before your reservation", rules: "Please tell us in advance about allergies, children or possible late arrival. Cancellation terms are shown on the reservation site.", alternative: "If online availability is limited, please contact us by telephone." },
+    reservation: {
+      rail: "Reserve", site: "Reservation site", button: "Reserve", notice: "Before your reservation", rules: "Please tell us in advance about allergies, children or possible late arrival. Cancellation terms are shown on the reservation site.", alternative: "If online availability is limited, please contact us by telephone.",
+      customerNotice: "Notice to our guests", close: "Close",
+      guidance: [
+        { title: "Before your visit", paragraphs: ["If you have a fixed departure time on the day of your reservation, including a flight or other transport connection, please contact us in advance. We may be unable to accommodate requests made on the day.", "Guests arriving more than 30 minutes late will be served from the course then in progress. If you leave before the course is complete, some dishes may not be served."] },
+        { title: "Dress code", paragraphs: ["Please refrain from visiting in excessively casual clothing.", "Guests wearing strong fragrance may be refused entry so that everyone can enjoy the aromas of the cuisine."] },
+        { title: "Reservation methods", paragraphs: ["We do not accept reservations through Peccotter, Auto Reserve, Gourmet Reserve, or other booking agents not introduced by CHOTEI.", "Please use the Ikyu Restaurant link on this website or contact the restaurant directly. Reservations identified as having been made through an unauthorized agent may be cancelled."] },
+      ],
+    },
     footer: { notice: "News", copyright: "© 2026 CHOTEI. All rights reserved." },
   },
   zh: {
@@ -101,7 +117,15 @@ const copy = {
     },
     space: { rail: "店铺", labels: ["入口", "吧台", "用餐区", "餐桌席", "主厅", "包间"] },
     info: { hours: "营业时间", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "休息日", closedValue: "周日及不定休", tel: "电话", address: "地址", addressValue: "〒106-0032 日本东京都港区六本木7-13-9 1F", seats: "座席", seatsValue: "吧台4席 / 包间6间", map: "地图与路线" },
-    reservation: { rail: "预约", site: "预约网站", button: "预约", notice: "预约注意事项", rules: "如有过敏、儿童同行或可能迟到，请提前告知店铺。取消规则请以预约网站说明为准。", alternative: "若线上没有合适座席，也可致电咨询。" },
+    reservation: {
+      rail: "预约", site: "预约网站", button: "预约", notice: "预约注意事项", rules: "如有过敏、儿童同行或可能迟到，请提前告知店铺。取消规则请以预约网站说明为准。", alternative: "若线上没有合适座席，也可致电咨询。",
+      customerNotice: "致宾客的重要通知", close: "关闭",
+      guidance: [
+        { title: "到店须知", paragraphs: ["若预约当天已有确定的返程时间，例如需搭乘飞机或其他交通工具，请提前联系餐厅。当日或临近到店时提出的时间要求，我们可能无法满足。", "若迟到超过30分钟，将从当时的课程进度开始上菜；如需中途离席，部分菜品可能无法提供，敬请谅解。"] },
+        { title: "着装要求", paragraphs: ["请勿穿着过度休闲的服装到店。", "为不影响料理香气及其他宾客的用餐体验，使用浓烈香水者可能会被谢绝入店。"] },
+        { title: "预约方式说明", paragraphs: ["本店不接受通过 Peccotter、Auto Reserve、Gourmet Reserve 等未经長亭指定的第三方代订服务所提交的预约。", "请使用本网站提供的一休餐厅预约链接，或直接联系店铺。若确认预约来自未经授权的代订服务，本店可能取消该预约。"] },
+      ],
+    },
     footer: { notice: "最新消息", copyright: "© 2026 CHOTEI. All rights reserved." },
   },
 } as const;
@@ -125,6 +149,9 @@ export default function ChoteiSite() {
   const [storeSlide, setStoreSlide] = useState(1);
   const [storeAnimating, setStoreAnimating] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<CourseSelection | null>(null);
+  const [noticeOpen, setNoticeOpen] = useState(false);
+  const noticeTriggerRef = useRef<HTMLButtonElement>(null);
+  const noticeCloseRef = useRef<HTMLButtonElement>(null);
   const t = copy[lang];
   const seasonKeys = Object.keys(seasonalImages) as Season[];
   const activeSeasonImages = seasonalImages[season];
@@ -157,15 +184,29 @@ export default function ChoteiSite() {
   }, [storeAnimating]);
 
   useEffect(() => {
-    if (!selectedCourse) return;
-    const close = (event: KeyboardEvent) => { if (event.key === "Escape") setSelectedCourse(null); };
+    if (!selectedCourse && !noticeOpen) return;
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Tab" && noticeOpen) {
+        event.preventDefault();
+        noticeCloseRef.current?.focus();
+        return;
+      }
+      if (event.key === "Escape") {
+        if (noticeOpen) {
+          setNoticeOpen(false);
+          window.requestAnimationFrame(() => noticeTriggerRef.current?.focus());
+        } else setSelectedCourse(null);
+      }
+    };
     document.body.style.overflow = "hidden";
+    if (noticeOpen) window.requestAnimationFrame(() => noticeCloseRef.current?.focus());
     window.addEventListener("keydown", close);
     return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", close); };
-  }, [selectedCourse]);
+  }, [selectedCourse, noticeOpen]);
 
-  const changeLanguage = (code: Lang) => { setLang(code); setSelectedCourse(null); };
+  const changeLanguage = (code: Lang) => { setLang(code); setSelectedCourse(null); setNoticeOpen(false); };
   const openCourse = (course: { title: string; detail: readonly string[] }, image: string, note?: string) => setSelectedCourse({ ...course, image, note });
+  const closeNotice = () => { setNoticeOpen(false); window.requestAnimationFrame(() => noticeTriggerRef.current?.focus()); };
 
   return (
     <main id="top">
@@ -230,13 +271,14 @@ export default function ChoteiSite() {
 
       <section className="reservation" id="reservation">
         <div className="reservation__identity"><RailTitle label={t.reservation.rail} light /><BrandMark tone="white" variant="vertical" /></div>
-        <div className="reservation__main"><p>{t.reservation.site}</p><h2>{t.reservation.button}</h2><a className="reserve-button" href="https://restaurant.ikyu.com/149159" target="_blank" rel="noreferrer"><span>{t.reservation.button}</span><i>↗</i></a><details><summary>{t.reservation.notice}</summary><p>{t.reservation.rules}</p></details><small>{t.reservation.alternative} <a href="tel:+815031013945">050-3101-3945</a></small></div>
+        <div className="reservation__main"><p>{t.reservation.site}</p><h2>{t.reservation.button}</h2><a className="reserve-button" href="https://restaurant.ikyu.com/149159" target="_blank" rel="noreferrer"><span>{t.reservation.button}</span><i>↗</i></a><details><summary>{t.reservation.notice}</summary><p>{t.reservation.rules}</p></details><small>{t.reservation.alternative} <a href="tel:+815031013945">050-3101-3945</a></small><button type="button" ref={noticeTriggerRef} className="customer-notice-button" onClick={() => setNoticeOpen(true)}><span>{t.reservation.customerNotice}</span><i>＋</i></button></div>
       </section>
 
       <footer id="footer"><BrandMark variant="vertical" /><div className="footer__languages">{(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => changeLanguage(code)} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}</div><small>{t.footer.copyright}</small></footer>
       <a className="news-chip" href="#information">{t.footer.notice}</a>
 
       {selectedCourse && <div className="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-title" onMouseDown={event => { if (event.target === event.currentTarget) setSelectedCourse(null); }}><article><button className="course-modal__close" onClick={() => setSelectedCourse(null)} aria-label={t.menus.close}>×</button><div className="course-modal__image"><img src={`/images/real/${selectedCourse.image}`} alt="" /></div><div className="course-modal__copy"><small>{selectedCourse.note ?? t.menus.contents}</small><h2 id="course-title">{selectedCourse.title}</h2><ul>{selectedCourse.detail.map(item => <li key={item}>{item}</li>)}</ul></div></article></div>}
+      {noticeOpen && <div className="notice-modal" role="dialog" aria-modal="true" aria-labelledby="notice-title" onMouseDown={event => { if (event.target === event.currentTarget) closeNotice(); }}><article><button type="button" ref={noticeCloseRef} className="notice-modal__close" onClick={closeNotice} aria-label={t.reservation.close}>×</button><header><div className="brand brand--vertical"><img src="/images/brand/logo-vertical-black.webp" alt="" /></div><p>CHOTEI</p><h2 id="notice-title">{t.reservation.customerNotice}</h2></header><div className="notice-modal__body">{t.reservation.guidance.map(section => <section key={section.title}><h3>【{section.title}】</h3>{section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</section>)}</div></article></div>}
     </main>
   );
 }
