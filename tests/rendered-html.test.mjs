@@ -93,6 +93,9 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /\.cuisine \{[^}]*min-height: 100svh;/s);
   assert.match(css, /\.hero h1 span, \.origin > h2 span, \.philosophy > h2 span \{ white-space: nowrap; \}/);
   assert.match(css, /\.site--en \.origin > h2 \{[^}]*font-size: clamp\(27px, 2\.5vw, 36px\);/s);
+  assert.match(css, /\.site-header \{[^}]*background: rgba\(247, 245, 239, \.9\);/s);
+  assert.match(css, /\.site-header\.is-scrolled \{[^}]*background: rgba\(247, 245, 239, \.94\);/s);
+  assert.match(css, /\.philosophy \{[^}]*background: var\(--paper-warm\);/s);
   assert.match(css, /\.cuisine__layout \{[^}]*grid-template-columns:/s);
   assert.match(css, /\.cuisine__rail \{[^}]*flex-direction: column;/s);
   assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.94;/s);
