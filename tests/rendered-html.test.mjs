@@ -94,6 +94,8 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /\.cuisine__rail \{[^}]*flex-direction: column;/s);
   assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.94;/s);
   assert.match(css, /\.priced-courses \.priced-course:hover \{[^}]*flex-grow: 1\.18;/s);
+  assert.match(css, /\.priced-course:focus \{ outline: 0; \}/);
+  assert.match(css, /\.priced-course:focus-visible > b \{[^}]*font-weight: 500;/s);
   assert.match(css, /animation: storeCarousel 27s/);
   assert.doesNotMatch(css, /mix-blend-mode/);
   assert.match(css, /@keyframes storeCarousel/);

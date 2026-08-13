@@ -107,7 +107,9 @@ img { display: block; width: 100%; }
 .priced-course__image { display: block; min-height: 0; overflow: hidden; background: #161411; }
 .priced-course__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.78); transform: scale(1.005); transition: filter .8s ease, transform 1.25s cubic-bezier(.16,1,.3,1); }
 .priced-course:hover .priced-course__image img { filter: saturate(.92); transform: scale(1.018); }
-.priced-course > b { padding: 26px 10px 12px; font-size: clamp(17px, 1.7vw, 24px); font-weight: 300; letter-spacing: .06em; }
+.priced-course:focus { outline: 0; }
+.priced-course > b { padding: 26px 10px 12px; font-size: clamp(17px, 1.7vw, 24px); font-weight: 300; letter-spacing: .06em; transition: color .3s ease, font-weight .3s ease; }
+.priced-course:focus-visible > b { color: #765e32; font-weight: 500; }
 .special-courses { width: min(980px, 90vw); margin: 105px auto 0; text-align: center; }
 .special-courses h3 { margin: 0 0 40px; font-size: 18px; font-weight: 300; letter-spacing: .1em; }
 .special-courses > div { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
