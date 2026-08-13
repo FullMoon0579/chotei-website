@@ -40,6 +40,10 @@ test("server-renders the finished CHOTEI site", async () => {
   assert.match(html, /熊掌コース/);
   assert.match(html, /¥3,980/);
   assert.match(html, /¥19,800/);
+  assert.match(html, /長亭のコースはすべて事前予約制です/);
+  assert.match(html, /class="priced-courses"/);
+  assert.match(html, /class="special-courses"/);
+  assert.doesNotMatch(html, /五里に短亭、|十里に長亭。|融合ではなく、対話。|要予約/);
   assert.doesNotMatch(html, /gallery-arrow|gallery-dots|<figcaption>/);
   assert.doesNotMatch(html, /IKYU RESTAURANT|ROPPONGI, TOKYO|>ORIGIN</);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/);
@@ -74,5 +78,11 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /\.notice-modal > article \{[^}]*overflow-y: auto;/s);
   assert.match(css, /@keyframes scrollGuide/);
   assert.match(css, /\.scroll-mark\.is-hidden/);
-  assert.match(css, /\.rail-title i \{[^}]*width: 2px;[^}]*height: 84px;/s);
+  assert.match(css, /\.rail-title i \{[^}]*width: 3px;[^}]*height: 96px;[^}]*transform: translateY\(-28px\);/s);
+  assert.match(css, /\.cuisine \{[^}]*min-height: 100svh;/s);
+  assert.match(css, /\.cuisine__layout \{[^}]*grid-template-columns:/s);
+  assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.9;/s);
+  assert.match(css, /--reservation-gold: #c8ae62;/);
+  assert.match(source, /loading="eager" decoding="async"/);
+  assert.match(source, /setStoreSlide\(value => value >= storeImages\.length \+ 1 \? value : value \+ 1\)/);
 });
