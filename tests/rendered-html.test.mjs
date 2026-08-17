@@ -32,6 +32,7 @@ test("server-renders the finished CHOTEI site", async () => {
   assert.match(html, /twitter:card/);
   assert.match(html, /og\.webp/);
   assert.match(html, /images\/real\/hero-private-dining\.webp/);
+  assert.match(html, /images\/real\/ingredient-spring-01\.webp/);
   assert.match(html, /images\/brand\/logo-new-black\.webp/);
   assert.match(html, /images\/brand\/logo-vertical-black\.webp/);
   assert.match(html, /ふかひれコース/);
@@ -90,6 +91,11 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(source, /上海蟹味噌ふかひれ/);
   assert.match(source, /松茸と牛尾のスープ/);
   assert.match(source, /栗・海鮮・鶏肉の炒飯/);
+  assert.match(source, /ingredient-summer-01\.webp/);
+  assert.match(source, /ingredient-winter-01\.webp/);
+  assert.match(source, /spring: \["筍", "山菜", "桜鯛", "蛍烏賊"\]/);
+  assert.match(source, /summer: \["鮎", "雲丹", "鱧", "茄子"\]/);
+  assert.match(source, /winter: \["河豚", "白子", "蟹", "牡蠣"\]/);
   assert.match(css, /\.cuisine \{[^}]*min-height: 100svh;/s);
   assert.match(css, /\.hero h1 span, \.origin > h2 span, \.philosophy > h2 span \{ white-space: nowrap; \}/);
   assert.match(css, /\.site--en \.origin > h2 \{[^}]*font-size: clamp\(27px, 2\.5vw, 36px\);/s);
