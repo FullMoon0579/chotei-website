@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
+import { menuArtwork, menuContent } from "../app/menu-content.ts";
+import { guestNoticeContent } from "../app/guest-notice-content.ts";
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -33,21 +35,23 @@ test("server-renders the finished CHOTEI site", async () => {
   assert.match(html, /og\.webp/);
   assert.match(html, /images\/real\/hero-private-dining\.webp/);
   assert.match(html, /images\/real\/ingredient-spring-01\.webp/);
-  assert.match(html, /images\/brand\/logo-new-black\.webp/);
+  assert.match(html, /images\/brand\/logo-signature\.webp/);
   assert.match(html, /images\/brand\/logo-vertical-black\.webp/);
   assert.match(html, /ふかひれコース/);
   assert.match(html, /鮑コース/);
   assert.match(html, /佛跳牆コース/);
   assert.match(html, /熊掌コース/);
-  assert.match(html, /¥3,980/);
+  assert.match(html, /¥5,980/);
   assert.match(html, /¥19,800/);
   assert.match(html, /長亭のコースはすべて事前予約制です/);
   assert.match(html, /class="priced-courses"/);
   assert.match(html, /class="special-courses"/);
-  assert.match(html, /images\/real\/course-3980\.jpg/);
-  assert.match(html, /images\/real\/course-8800\.jpg/);
-  assert.match(html, /images\/real\/course-13200\.jpg/);
-  assert.match(html, /images\/real\/course-19800\.jpg/);
+  assert.match(html, /images\/menus\/menu-5980\.webp/);
+  assert.match(html, /images\/menus\/menu-8800\.webp/);
+  assert.match(html, /images\/menus\/menu-13200\.webp/);
+  assert.match(html, /images\/menus\/menu-19800\.webp/);
+  assert.match(html, /24席（カウンター4席、テーブル20席）/);
+  assert.doesNotMatch(html, /¥3,980|個室 6室/);
   assert.doesNotMatch(html, /五里に短亭、|十里に長亭。|融合ではなく、対話。|要予約/);
   assert.doesNotMatch(html, /gallery-arrow|gallery-dots|<figcaption>/);
   assert.doesNotMatch(html, /IKYU RESTAURANT|ROPPONGI, TOKYO|>ORIGIN</);
@@ -77,9 +81,9 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.ok(font.byteLength > 100_000);
   assert.match(source, /className="customer-notice-button"/);
   assert.match(source, /className="notice-modal" role="dialog" aria-modal="true"/);
-  assert.match(source, /ご来店時のお願い/);
-  assert.match(source, /ドレスコードについて/);
-  assert.match(source, /ご予約方法についてのお知らせ/);
+  assert.match(source, /guidance: guestNoticeContent\.ja/);
+  assert.match(source, /section\.items\.map/);
+  assert.match(source, /<NoticeText>\{paragraph\}<\/NoticeText>/);
   assert.match(css, /\.notice-modal > article \{[^}]*overflow-y: auto;/s);
   assert.match(css, /@keyframes scrollGuide/);
   assert.match(css, /\.scroll-mark\.is-hidden/);
@@ -89,8 +93,7 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(source, /characters\.map\(\(character, index\)/);
   assert.match(source, /className=\{`site site--\$\{lang\}`\}/);
   assert.match(source, /上海蟹味噌ふかひれ/);
-  assert.match(source, /松茸と牛尾のスープ/);
-  assert.match(source, /栗・海鮮・鶏肉の炒飯/);
+  assert.match(source, /basic: menuContent\.ja/);
   assert.match(source, /ingredient-summer-01\.webp/);
   assert.match(source, /ingredient-winter-01\.webp/);
   assert.match(source, /spring: \["筍", "山菜", "桜鯛", "蛍烏賊"\]/);
@@ -104,10 +107,13 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /\.philosophy \{[^}]*background: var\(--paper-warm\);/s);
   assert.match(css, /\.cuisine__layout \{[^}]*grid-template-columns:/s);
   assert.match(css, /\.cuisine__rail \{[^}]*flex-direction: column;/s);
-  assert.match(css, /\.priced-courses:hover \.priced-course \{[^}]*flex-grow: \.94;/s);
-  assert.match(css, /\.priced-courses \.priced-course:hover \{[^}]*flex-grow: 1\.18;/s);
+  assert.match(css, /\.priced-courses \{[^}]*grid-template-columns: repeat\(4, minmax\(0, 1fr\)\);/s);
+  assert.match(css, /\.priced-course__image img \{[^}]*object-fit: contain;/s);
   assert.match(css, /\.priced-course:focus \{ outline: 0; \}/);
-  assert.match(css, /\.priced-course:focus-visible > b \{[^}]*font-weight: 500;/s);
+  assert.match(css, /\.priced-course:focus-visible \{[^}]*outline: 2px solid var\(--gold\);/s);
+  assert.doesNotMatch(css, /\.priced-course[^}]*flex-grow/);
+  assert.match(css, /\.course-modal--document \.course-modal__image img \{ height: auto; object-fit: contain; \}/);
+  assert.match(source, /courseTriggerRef\.current\?\.focus\(\)/);
   assert.match(css, /animation: storeCarousel 27s/);
   assert.doesNotMatch(css, /mix-blend-mode/);
   assert.match(css, /@keyframes storeCarousel/);
@@ -117,4 +123,51 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(source, /loading="eager" decoding="async"/);
   assert.doesNotMatch(source, /reservation__identity"><RailTitle[^\n]*BrandMark/);
   assert.doesNotMatch(source, /storeSlide|storeAnimating|CSSProperties/);
+});
+
+test("shows four complete menu pages in order, without duplicate price captions", async () => {
+  const html = await (await render()).text();
+  const cards = html.match(/class="priced-courses">([\s\S]*?)<\/div>/)?.[1];
+  assert.ok(cards);
+  assert.deepEqual([...cards.matchAll(/src="([^"]+)"/g)].map(match => match[1]), menuArtwork);
+  assert.equal([...cards.matchAll(/aria-haspopup="dialog"/g)].length, 4);
+  assert.doesNotMatch(cards, /<b\b|<figcaption\b|>¥/);
+  assert.equal([...html.matchAll(/src="\/images\/brand\/logo-signature.webp"/g)].length, 2);
+
+  for (const language of ["ja", "en", "zh"]) {
+    assert.deepEqual(menuContent[language].map(course => course.price), ["¥5,980", "¥8,800", "¥13,200", "¥19,800"]);
+    assert.deepEqual(menuContent[language].map(course => course.detail.length), [7, 11, 12, 11]);
+    assert.ok(menuContent[language][0].note);
+  }
+  assert.deepEqual(menuContent.ja.map(course => course.title), ["個園", "網師園", "留園", "長亭"]);
+  assert.equal(menuContent.ja[0].detail[3], "辣子鶏");
+  assert.ok(menuContent.ja[1].detail.includes("自慢の一本長亭酢豚"));
+  assert.ok(menuContent.ja[2].detail.includes("フカヒレ餡かけ御飯"));
+  assert.ok(menuContent.ja[3].detail.includes("黒トリュフとキャビアのタリオリーニ"));
+
+  for (const asset of [...menuArtwork, "/images/brand/logo-signature.webp"]) {
+    const data = await readFile(new URL(`../public${asset}`, import.meta.url));
+    assert.equal(data.toString("ascii", 0, 4), "RIFF");
+    assert.equal(data.toString("ascii", 8, 12), "WEBP");
+    assert.ok(data.length > 1000);
+  }
+});
+
+test("replaces guest notices consistently in all three languages", () => {
+  assert.deepEqual(guestNoticeContent.ja.map(section => section.title), ["ご来店時のお願い", "キャンセルについて", "ご予約方法について", "お支払いについて"]);
+  assert.equal(guestNoticeContent.ja[0].paragraphs.length, 4);
+  assert.equal(guestNoticeContent.ja[0].paragraphs[2], "ご予約時間より **30分以上遅れてご来店される場合**、ご到着時点からお料理のご提供を開始いたします。");
+  assert.deepEqual(guestNoticeContent.ja[1].items, ["ご予約日前日 00:00以降：**50％**", "当日キャンセル（ご連絡あり）：**100％**", "当日キャンセル（ご連絡なし）：**100％**"]);
+  assert.equal(guestNoticeContent.ja[1].note, "※ ご予約いただいたプランに別途キャンセルポリシーが記載されている場合は、プラン内のキャンセルポリシーが優先されます。");
+  for (const language of ["ja", "en", "zh"]) {
+    const sections = guestNoticeContent[language];
+    assert.equal(sections.length, 4);
+    assert.equal(sections[1].items.length, 3);
+    assert.match(sections[1].items[0], /00:00.*50/);
+    assert.match(sections[1].items[1], /100/);
+    assert.match(sections[1].items[2], /100/);
+    assert.match(sections[3].paragraphs[1], /VISA \/ Master \/ JCB \/ AMEX \/ Diners \/ UnionPay/);
+    assert.match(sections[3].paragraphs[2], /PayPay/);
+    assert.doesNotMatch(JSON.stringify(sections), /Peccotter|Auto Reserve|ドレスコード|Dress code|着装要求/);
+  }
 });

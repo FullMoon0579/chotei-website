@@ -3,10 +3,11 @@
 /* eslint-disable @next/next/no-img-element -- restaurant and logo assets are pre-sized media files */
 
 import { useEffect, useRef, useState } from "react";
+import { menuArtwork, menuContent, type Language as Lang } from "./menu-content";
+import { guestNoticeContent } from "./guest-notice-content";
 
-type Lang = "ja" | "en" | "zh";
 type Season = "spring" | "summer" | "autumn" | "winter";
-type CourseSelection = { title: string; detail: readonly string[]; image: string };
+type CourseSelection = { title: string; detail: readonly string[]; image: string; price?: string; note?: string; document?: boolean };
 
 const seasonalImages: Record<Season, string[]> = {
   spring: ["ingredient-spring-01.webp", "ingredient-spring-02.webp", "ingredient-spring-03.webp", "ingredient-spring-04.webp"],
@@ -16,7 +17,6 @@ const seasonalImages: Record<Season, string[]> = {
 };
 
 const premiumCourseImages = ["winter-fukahire.webp", "premium-abalone.webp", "winter-soup.webp", "menu-premium.webp"];
-const basicCourseImages = ["course-3980.jpg", "course-8800.jpg", "course-13200.jpg", "course-19800.jpg"];
 const storeImages = ["space-entrance.webp", "space-dining-1.webp", "space-dining-2.webp", "space-dining-3.webp", "space-dining-4.webp", "space-private.webp"];
 const storeSequence = [...storeImages, storeImages[0]];
 const mapUrl = "https://www.google.com/maps/place/%E9%95%B7%E4%BA%AD+CHOTEI/@35.6636563,139.7256698,16.89z/data=!3m1!5s0x60188b7840b89495:0xdccd41a44c51eac2!4m6!3m5!1s0x60188b9febc424b5:0xad79b9012c244206!8m2!3d35.663729!4d139.730426!16s%2Fg%2F11xklmrgxx?entry=ttu&g_ep=EgoyMDI2MDgwMi4wIKXMDSoASAFQAw%3D%3D";
@@ -37,23 +37,14 @@ const copy = {
         { title: "佛跳牆コース", detail: ["季節の前菜三品", "珍品佛跳牆", "よだれ鶏", "広東点心", "季節野菜の炒め", "本日のデザート", "中国茶"] },
         { title: "熊掌コース", detail: ["季節の前菜三品", "熊掌の醤油煮込み", "三種海鮮の炒め", "広東点心", "季節野菜の炒め", "本日のデザート", "中国茶"] },
       ],
-      basic: [
-        { title: "¥3,980", detail: ["季節の前菜三品", "鮑の赤ワイン煮", "栗の油淋鶏（季節限定）", "広東点心一品", "ご飯", "コーンスープ", "本日のデザート", "中国茶"] },
-        { title: "¥8,800", detail: ["季節の前菜三品", "梨・無花果と排骨のスープ（季節限定）", "南瓜の長亭酢豚（季節限定）", "海鮮と秋野菜の炒め（季節限定）", "花椒香る脆皮鳩", "鮑の黒トリュフソース焼き", "広東海老蒸し餃子", "本日のデザート", "中国茶"] },
-        { title: "¥13,200", detail: ["季節の前菜三品", "ふかひれの黄金スープ", "極上松茸と和牛の香り焼き（季節限定）", "秋柿のチーズ焼きサラダ（季節限定）", "花椒香る脆皮鳩", "秋刀魚の香ばし焼き（季節限定）", "銀杏と大海老の椒塩仕立て（季節限定）", "栗入り角煮ご飯（季節限定）", "本日のデザート", "中国茶"] },
-        { title: "¥19,800", detail: ["季節の前菜五品", "松茸と牛尾のスープ（季節限定）", "上海蟹味噌ふかひれ", "極上松茸と和牛の香り焼き（季節限定）", "秋柿のチーズ焼きサラダ（季節限定）", "銀杏と大海老の椒塩仕立て（季節限定）", "鮑の黒トリュフソース焼き", "秋刀魚の香ばし焼き（季節限定）", "栗・海鮮・鶏肉の炒飯（季節限定）", "本日のデザート", "季節の果物盛り合わせ", "中国茶"] },
-      ],
+      basic: menuContent.ja,
     },
     space: { rail: "店舗", labels: ["入口", "カウンター", "ダイニング", "テーブル席", "主室", "個室"] },
-    info: { hours: "営業時間", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "定休日", closedValue: "日曜日・不定休", tel: "電話番号", address: "住所", addressValue: "〒106-0032 東京都港区六本木7-13-9 1F", seats: "座席数", seatsValue: "カウンター 4席 / 個室 6室", map: "地図・アクセス" },
+    info: { hours: "営業時間", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "定休日", closedValue: "日曜日・不定休", tel: "電話番号", address: "住所", addressValue: "〒106-0032 東京都港区六本木7-13-9 1F", seats: "座席数", seatsValue: "24席（カウンター4席、テーブル20席）", map: "地図・アクセス" },
     reservation: {
       rail: "ご予約", siteLabel: "予約サイト", button: "予約",
       customerNotice: "お客様へのお知らせ", close: "閉じる",
-      guidance: [
-        { title: "ご来店時のお願い", paragraphs: ["ご予約当日のお帰りの時間（飛行機などの交通機関）にお決まりのある方は、事前にお問い合わせくださいますようお願いいたします。当日や直前のお申し出の場合、ご希望に添えない場合がございます。", "ご予約時間より30分以上遅れてご来店される場合、その時点からのお料理のご提供となります。また、途中退店される場合、コースの一部をお出しできない可能性もございますので、ご了承くださいませ。"] },
-        { title: "ドレスコードについて", paragraphs: ["過度な軽装でのご来店はお控えいただいております。", "また、過度な香水をお付けになっている場合、ご入店をお断りする場合がございます。"] },
-        { title: "ご予約方法についてのお知らせ", paragraphs: ["当店では「Peccotter（ペコッター）」「Auto Reserve（オートリザーブ）」「グルメリザーブ」など、当店がご案内していない予約代行サービスからのご予約は、日程・時間帯を問わず受け付けておりません。", "当サイトからご案内する一休レストラン、または店舗への直接のお問い合わせをご利用ください。予約代行サービス経由と判明した場合、ご予約を取り消す場合がございます。"] },
-      ],
+      guidance: guestNoticeContent.ja,
     },
     footer: { copyright: "© 2026 CHOTEI. All rights reserved." },
   },
@@ -72,23 +63,14 @@ const copy = {
         { title: "Buddha Jumps Over the Wall", detail: ["Three seasonal appetizers", "Buddha Jumps Over the Wall", "Sichuan mouthwatering chicken", "Cantonese dim sum", "Wok-fried seasonal vegetables", "Dessert of the day", "Chinese tea"] },
         { title: "Rare delicacy course", detail: ["Three seasonal appetizers", "Red-braised bear paw", "Stir-fried three delicacies", "Cantonese dim sum", "Wok-fried seasonal vegetables", "Dessert of the day", "Chinese tea"] },
       ],
-      basic: [
-        { title: "¥3,980", detail: ["Three seasonal appetizers", "Abalone braised in red wine", "Chestnut crispy chicken（seasonal）", "One Cantonese dim sum", "Rice", "Sweetcorn soup", "Dessert of the day", "Chinese tea"] },
-        { title: "¥8,800", detail: ["Three seasonal appetizers", "Pear, fig and pork rib soup（seasonal）", "CHOTEI sweet-and-sour pork with pumpkin（seasonal）", "Seafood with autumn vegetables（seasonal）", "Sichuan pepper crispy pigeon", "Abalone with black truffle sauce", "Cantonese prawn dumplings", "Dessert of the day", "Chinese tea"] },
-        { title: "¥13,200", detail: ["Three seasonal appetizers", "Shark fin in golden broth", "Wagyu with premium matsutake（seasonal）", "Baked autumn persimmon and cheese salad（seasonal）", "Sichuan pepper crispy pigeon", "Chargrilled Pacific saury（seasonal）", "Salt-and-pepper king prawns with ginkgo（seasonal）", "Chestnut braised-pork rice（seasonal）", "Dessert of the day", "Chinese tea"] },
-        { title: "¥19,800", detail: ["Five seasonal appetizers", "Matsutake and oxtail soup（seasonal）", "Shark fin with Shanghai crab roe", "Wagyu with premium matsutake（seasonal）", "Baked autumn persimmon and cheese salad（seasonal）", "Salt-and-pepper king prawns with ginkgo（seasonal）", "Abalone with black truffle sauce", "Chargrilled Pacific saury（seasonal）", "Chestnut, seafood and chicken fried rice（seasonal）", "Dessert of the day", "Seasonal fruit platter", "Chinese tea"] },
-      ],
+      basic: menuContent.en,
     },
     space: { rail: "Store", labels: ["Entrance", "Counter", "Dining room", "Table seating", "Main room", "Private room"] },
-    info: { hours: "Hours", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "Closed", closedValue: "Sundays and irregular holidays", tel: "Telephone", address: "Address", addressValue: "1F, 7-13-9 Roppongi, Minato-ku, Tokyo 106-0032", seats: "Seating", seatsValue: "4 counter seats / 6 private rooms", map: "Map & directions" },
+    info: { hours: "Hours", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "Closed", closedValue: "Sundays and irregular holidays", tel: "Telephone", address: "Address", addressValue: "1F, 7-13-9 Roppongi, Minato-ku, Tokyo 106-0032", seats: "Seating", seatsValue: "24 seats (4 counter seats, 20 table seats)", map: "Map & directions" },
     reservation: {
       rail: "Reserve", siteLabel: "Reservation", button: "Reserve",
       customerNotice: "Notice to our guests", close: "Close",
-      guidance: [
-        { title: "Before your visit", paragraphs: ["If you have a fixed departure time on the day of your reservation, including a flight or other transport connection, please contact us in advance. We may be unable to accommodate requests made on the day.", "Guests arriving more than 30 minutes late will be served from the course then in progress. If you leave before the course is complete, some dishes may not be served."] },
-        { title: "Dress code", paragraphs: ["Please refrain from visiting in excessively casual clothing.", "Guests wearing strong fragrance may be refused entry so that everyone can enjoy the aromas of the cuisine."] },
-        { title: "Reservation methods", paragraphs: ["We do not accept reservations through Peccotter, Auto Reserve, Gourmet Reserve, or other booking agents not introduced by CHOTEI.", "Please use the Ikyu Restaurant link on this website or contact the restaurant directly. Reservations identified as having been made through an unauthorized agent may be cancelled."] },
-      ],
+      guidance: guestNoticeContent.en,
     },
     footer: { copyright: "© 2026 CHOTEI. All rights reserved." },
   },
@@ -107,33 +89,28 @@ const copy = {
         { title: "佛跳墙套餐", detail: ["前菜三品", "珍品佛跳墙", "香辣口水鸡", "港式点心", "炒时蔬", "当日甜品", "中国茶"] },
         { title: "熊掌套餐", detail: ["前菜三品", "红烧熊掌", "炒三鲜", "港式点心", "炒时蔬", "当日甜品", "中国茶"] },
       ],
-      basic: [
-        { title: "¥3,980", detail: ["前菜三品", "红酒煮鲍鱼", "栗子油淋鸡（时令）", "港式点心一品", "米饭", "玉米汤", "当日甜品", "中国茶"] },
-        { title: "¥8,800", detail: ["前菜三品", "雪梨无花果排骨汤（时令）", "南瓜長亭醋豚（时令）", "海鲜秋旬炒野菜（时令）", "麻椒脆皮乳鸽", "黑松露酱焗鲍鱼", "港式虾饺", "当日甜品", "中国茶"] },
-        { title: "¥13,200", detail: ["前菜三品", "鱼翅金汤", "极品松茸煎和牛（时令）", "芝士焗秋柿沙拉（时令）", "麻椒脆皮乳鸽", "煎烤秋刀鱼（时令）", "椒盐银杏大虾球（时令）", "栗子扣肉饭（时令）", "当日甜品", "中国茶"] },
-        { title: "¥19,800", detail: ["前菜五品", "松茸牛尾汤（时令）", "上海蟹粉鱼翅", "极品松茸煎和牛（时令）", "芝士焗秋柿沙拉（时令）", "椒盐银杏大虾球（时令）", "黑松露酱焗鲍鱼", "煎烤秋刀鱼（时令）", "栗子海鲜鸡肉炒饭（时令）", "当日甜品", "水果拼盘（时令）", "中国茶"] },
-      ],
+      basic: menuContent.zh,
     },
     space: { rail: "店铺", labels: ["入口", "吧台", "用餐区", "餐桌席", "主厅", "包间"] },
-    info: { hours: "营业时间", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "休息日", closedValue: "周日及不定休", tel: "电话", address: "地址", addressValue: "〒106-0032 日本东京都港区六本木7-13-9 1F", seats: "座席", seatsValue: "吧台4席 / 包间6间", map: "地图与路线" },
+    info: { hours: "营业时间", hoursValue: "11:30–14:30 / 18:00–22:00", closed: "休息日", closedValue: "周日及不定休", tel: "电话", address: "地址", addressValue: "〒106-0032 日本东京都港区六本木7-13-9 1F", seats: "座席", seatsValue: "24席（吧台4席、餐桌20席）", map: "地图与路线" },
     reservation: {
       rail: "预约", siteLabel: "预约网站", button: "预约",
       customerNotice: "致宾客的重要通知", close: "关闭",
-      guidance: [
-        { title: "到店须知", paragraphs: ["若预约当天已有确定的返程时间，例如需搭乘飞机或其他交通工具，请提前联系餐厅。当日或临近到店时提出的时间要求，我们可能无法满足。", "若迟到超过30分钟，将从当时的课程进度开始上菜；如需中途离席，部分菜品可能无法提供，敬请谅解。"] },
-        { title: "着装要求", paragraphs: ["请勿穿着过度休闲的服装到店。", "为不影响料理香气及其他宾客的用餐体验，使用浓烈香水者可能会被谢绝入店。"] },
-        { title: "预约方式说明", paragraphs: ["本店不接受通过 Peccotter、Auto Reserve、Gourmet Reserve 等未经長亭指定的第三方代订服务所提交的预约。", "请使用本网站提供的一休餐厅预约链接，或直接联系店铺。若确认预约来自未经授权的代订服务，本店可能取消该预约。"] },
-      ],
+      guidance: guestNoticeContent.zh,
     },
     footer: { copyright: "© 2026 CHOTEI. All rights reserved." },
   },
 } as const;
 
-type LogoVariant = "horizontal" | "vertical";
+type LogoVariant = "signature" | "vertical";
 
-function BrandMark({ tone = "black", variant = "horizontal", className = "" }: { tone?: "black" | "white"; variant?: LogoVariant; className?: string }) {
-  const logoFile = variant === "horizontal" ? `logo-new-${tone}.webp` : `logo-${variant}-${tone}.webp`;
+function BrandMark({ variant = "signature", className = "" }: { variant?: LogoVariant; className?: string }) {
+  const logoFile = variant === "signature" ? "logo-signature.webp" : "logo-vertical-black.webp";
   return <a className={`brand brand--${variant} ${className}`} href="#top" aria-label="CHOTEI top"><img src={`/images/brand/${logoFile}`} alt="長亭 CHOTEI" /></a>;
+}
+
+function NoticeText({ children }: { children: string }) {
+  return children.split(/\*\*(.*?)\*\*/g).map((part, index) => index % 2 ? <strong key={index}>{part}</strong> : part);
 }
 
 function RailTitle({ label, light = false }: { label: string; light?: boolean }) {
@@ -150,6 +127,8 @@ export default function ChoteiSite() {
   const [noticeOpen, setNoticeOpen] = useState(false);
   const noticeTriggerRef = useRef<HTMLButtonElement>(null);
   const noticeCloseRef = useRef<HTMLButtonElement>(null);
+  const courseTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const courseCloseRef = useRef<HTMLButtonElement>(null);
   const t = copy[lang];
   const seasonKeys = Object.keys(seasonalImages) as Season[];
   const activeSeasonImages = seasonalImages[season];
@@ -172,32 +151,39 @@ export default function ChoteiSite() {
   useEffect(() => {
     if (!selectedCourse && !noticeOpen) return;
     const close = (event: KeyboardEvent) => {
-      if (event.key === "Tab" && noticeOpen) {
+      if (event.key === "Tab") {
         event.preventDefault();
-        noticeCloseRef.current?.focus();
+        (noticeOpen ? noticeCloseRef : courseCloseRef).current?.focus();
         return;
       }
       if (event.key === "Escape") {
         if (noticeOpen) {
           setNoticeOpen(false);
           window.requestAnimationFrame(() => noticeTriggerRef.current?.focus());
-        } else setSelectedCourse(null);
+        } else {
+          setSelectedCourse(null);
+          window.requestAnimationFrame(() => courseTriggerRef.current?.focus());
+        }
       }
     };
     document.body.style.overflow = "hidden";
-    if (noticeOpen) window.requestAnimationFrame(() => noticeCloseRef.current?.focus());
+    window.requestAnimationFrame(() => (noticeOpen ? noticeCloseRef : courseCloseRef).current?.focus());
     window.addEventListener("keydown", close);
     return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", close); };
   }, [selectedCourse, noticeOpen]);
 
   const changeLanguage = (code: Lang) => { setLang(code); setSelectedCourse(null); setNoticeOpen(false); };
-  const openCourse = (course: { title: string; detail: readonly string[] }, image: string) => setSelectedCourse({ ...course, image });
+  const openCourse = (course: Omit<CourseSelection, "image">, image: string) => {
+    courseTriggerRef.current = document.activeElement instanceof HTMLButtonElement ? document.activeElement : null;
+    setSelectedCourse({ ...course, image });
+  };
+  const closeCourse = () => { setSelectedCourse(null); window.requestAnimationFrame(() => courseTriggerRef.current?.focus()); };
   const closeNotice = () => { setNoticeOpen(false); window.requestAnimationFrame(() => noticeTriggerRef.current?.focus()); };
 
   return (
     <main id="top" className={`site site--${lang}`}>
       <header className={`site-header ${headerScrolled ? "is-scrolled" : ""}`}>
-        <BrandMark tone="black" />
+        <BrandMark />
         <nav className="desktop-nav" aria-label="Primary navigation">{["origin", "cuisine", "menus", "store", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}</nav>
         <div className="language" aria-label="Language">{(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => changeLanguage(code)} className={lang === code ? "is-active" : ""} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}</div>
         <details className="mobile-nav"><summary aria-label="Menu"><span /><span /></summary><nav>{["origin", "cuisine", "menus", "store", "reservation"].map((id, index) => <a href={`#${id}`} key={id}>{t.nav[index]}</a>)}</nav></details>
@@ -231,8 +217,8 @@ export default function ChoteiSite() {
 
       <section className="menus light-section" id="menus">
         <div className="menus__heading"><RailTitle label={t.menus.rail} /><p>{t.menus.notice}</p></div>
-        <div className="priced-courses">{t.menus.basic.map((course, index) => <button className="priced-course" key={course.title} onClick={() => openCourse(course, basicCourseImages[index])}><span className="priced-course__image"><img src={`/images/real/${basicCourseImages[index]}`} alt={course.title} loading="lazy" /></span><b>{course.title}</b></button>)}</div>
-        <div className="special-courses"><h3>{t.menus.specialLabel}</h3><div>{t.menus.featured.map((course, index) => <button key={course.title} onClick={() => openCourse(course, premiumCourseImages[index])}>{course.title}</button>)}</div></div>
+        <div className="priced-courses">{t.menus.basic.map((course, index) => <button type="button" className="priced-course" key={course.title} aria-haspopup="dialog" onClick={() => openCourse({ ...course, document: true }, menuArtwork[index])}><span className="priced-course__image"><img src={menuArtwork[index]} alt={`${course.title} ${course.price}`} width={1350} height={1800} loading="lazy" /></span></button>)}</div>
+        <div className="special-courses"><h3>{t.menus.specialLabel}</h3><div>{t.menus.featured.map((course, index) => <button key={course.title} onClick={() => openCourse(course, `/images/real/${premiumCourseImages[index]}`)}>{course.title}</button>)}</div></div>
       </section>
 
       <section className="store light-section" id="store">
@@ -261,10 +247,10 @@ export default function ChoteiSite() {
         <div className="reservation__main"><h2>{t.reservation.siteLabel}</h2><a className="reserve-button" href="https://restaurant.ikyu.com/149159" target="_blank" rel="noreferrer"><span>{t.reservation.button}</span><i>↗</i></a><button type="button" ref={noticeTriggerRef} className="customer-notice-button" onClick={() => setNoticeOpen(true)}><span>{t.reservation.customerNotice}</span><i>＋</i></button></div>
       </section>
 
-      <footer id="footer"><BrandMark variant="vertical" /><div className="footer__languages">{(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => changeLanguage(code)} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}</div><small>{t.footer.copyright}</small></footer>
+      <footer id="footer"><BrandMark /><div className="footer__languages">{(["ja", "en", "zh"] as Lang[]).map(code => <button key={code} onClick={() => changeLanguage(code)} aria-pressed={lang === code}>{code === "ja" ? "JA" : code === "en" ? "EN" : "中文"}</button>)}</div><small>{t.footer.copyright}</small></footer>
 
-      {selectedCourse && <div className="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-title" onMouseDown={event => { if (event.target === event.currentTarget) setSelectedCourse(null); }}><article><button className="course-modal__close" onClick={() => setSelectedCourse(null)} aria-label={t.menus.close}>×</button><div className="course-modal__image"><img src={`/images/real/${selectedCourse.image}`} alt={selectedCourse.title} /></div><div className="course-modal__copy"><h2 id="course-title">{selectedCourse.title}</h2><ul>{selectedCourse.detail.map(item => <li key={item}>{item}</li>)}</ul></div></article></div>}
-      {noticeOpen && <div className="notice-modal" role="dialog" aria-modal="true" aria-labelledby="notice-title" onMouseDown={event => { if (event.target === event.currentTarget) closeNotice(); }}><article><button type="button" ref={noticeCloseRef} className="notice-modal__close" onClick={closeNotice} aria-label={t.reservation.close}>×</button><header><div className="brand brand--vertical"><img src="/images/brand/logo-vertical-black.webp" alt="" /></div><h2 id="notice-title">{t.reservation.customerNotice}</h2></header><div className="notice-modal__body">{t.reservation.guidance.map(section => <section key={section.title}><h3>【{section.title}】</h3>{section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</section>)}</div></article></div>}
+      {selectedCourse && <div className={`course-modal${selectedCourse.document ? " course-modal--document" : ""}`} role="dialog" aria-modal="true" aria-labelledby="course-title" onMouseDown={event => { if (event.target === event.currentTarget) closeCourse(); }}><article><button type="button" ref={courseCloseRef} className="course-modal__close" onClick={closeCourse} aria-label={t.menus.close}>×</button>{(!selectedCourse.document || lang === "ja") && <div className="course-modal__image"><img src={selectedCourse.image} alt={selectedCourse.document ? "" : selectedCourse.title} /></div>}<div className={selectedCourse.document && lang === "ja" ? "sr-only" : "course-modal__copy"}><h2 id="course-title">{selectedCourse.title}{selectedCourse.price && <small>{selectedCourse.price}</small>}</h2><ul>{selectedCourse.detail.map(item => <li key={item}>{item}</li>)}</ul>{selectedCourse.note && <p className="course-modal__note">{selectedCourse.note}</p>}</div></article></div>}
+      {noticeOpen && <div className="notice-modal" role="dialog" aria-modal="true" aria-labelledby="notice-title" onMouseDown={event => { if (event.target === event.currentTarget) closeNotice(); }}><article><button type="button" ref={noticeCloseRef} className="notice-modal__close" onClick={closeNotice} aria-label={t.reservation.close}>×</button><header><div className="brand brand--vertical"><img src="/images/brand/logo-vertical-black.webp" alt="" /></div><h2 id="notice-title">{t.reservation.customerNotice}</h2></header><div className="notice-modal__body">{t.reservation.guidance.map(section => <section key={section.title}><h3>【{section.title}】</h3>{section.paragraphs.map(paragraph => <p key={paragraph}><NoticeText>{paragraph}</NoticeText></p>)}{section.subheading && <h4>{section.subheading}</h4>}{section.items && <ul>{section.items.map(item => <li key={item}><NoticeText>{item}</NoticeText></li>)}</ul>}{section.note && <p className="notice-modal__note"><NoticeText>{section.note}</NoticeText></p>}</section>)}</div></article></div>}
     </main>
   );
 }
