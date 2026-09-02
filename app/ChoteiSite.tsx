@@ -12,11 +12,11 @@ type CourseSelection = { title: string; detail: readonly string[]; image: string
 const seasonalImages: Record<Season, string[]> = {
   spring: ["ingredient-spring-01.webp", "ingredient-spring-02.webp", "ingredient-spring-03.webp", "ingredient-spring-04.webp"],
   summer: ["ingredient-summer-01.webp", "ingredient-summer-02.webp", "ingredient-summer-03.webp", "ingredient-summer-04.webp"],
-  autumn: ["autumn-matsutake.webp", "autumn-kinmedai.webp", "autumn-sake-fish.webp", "menu-seasonal.webp"],
-  winter: ["ingredient-winter-01.webp", "ingredient-winter-02.webp", "ingredient-winter-03.webp", "ingredient-winter-04.webp"],
+  autumn: ["autumn-vegetables.webp", "autumn-matsutake-wagyu.webp", "autumn-prawn-ginkgo.webp", "autumn-fig-soup.webp"],
+  winter: ["winter-matsutake-oxtail.webp", "winter-chestnut-chicken.webp", "winter-seafood-vegetables.webp", "winter-golden-shark-fin.webp"],
 };
 
-const premiumCourseImages = ["winter-fukahire.webp", "premium-abalone.webp", "winter-soup.webp", "menu-premium.webp"];
+const premiumCourseImages = ["winter-fukahire.webp", "special-abalone.webp", "special-buddha-soup.webp", "special-bear-paw.webp"];
 const storeImages = ["space-entrance.webp", "space-dining-1.webp", "space-dining-2.webp", "space-dining-3.webp", "space-dining-4.webp", "space-private.webp"];
 const storeSequence = [...storeImages, storeImages[0]];
 const mapUrl = "https://www.google.com/maps/place/%E9%95%B7%E4%BA%AD+CHOTEI/@35.6636563,139.7256698,16.89z/data=!3m1!5s0x60188b7840b89495:0xdccd41a44c51eac2!4m6!3m5!1s0x60188b9febc424b5:0xad79b9012c244206!8m2!3d35.663729!4d139.730426!16s%2Fg%2F11xklmrgxx?entry=ttu&g_ep=EgoyMDI2MDgwMi4wIKXMDSoASAFQAw%3D%3D";
@@ -28,7 +28,7 @@ const copy = {
     hero: { line1: "中国料理の技で", line2: "四季を奏でる" },
     origin: { rail: "長亭由来", lead: "五里に短亭\n十里に長亭", body: ["中国には、古くから伝わる言葉があります。長亭とは、旅の途中で足を休め、大切な人を送り、また迎える場所。", "出会いと再会を静かに見守り、人と人を結んできました。私たちは、その想いを「長亭」という名に込めました。"] },
     philosophy: { rail: "料理哲学", headline: "融合ではなく\n対話", body: ["長亭は、中国料理を礎としています。同時に、日本料理が大切にしてきた四季や食材、美意識からも着想を得ています。", "中国には「不時不食」、日本には「旬」という考えがあります。表現は異なっても、本当の美味しさは、自然に寄り添い、旬を尊ぶことから生まれる。", "中国料理の技法で、日本の四季を映し出す。一皿の中で、二つの食文化が自然に響き合う。それが、長亭の料理です。"] },
-    cuisine: { rail: "お料理", seasons: { spring: "春", summer: "夏", autumn: "秋", winter: "冬" }, captions: { spring: ["筍", "山菜", "桜鯛", "蛍烏賊"], summer: ["鮎", "雲丹", "鱧", "茄子"], autumn: ["松茸と和牛", "金目鯛の姿蒸し", "地酒と金目鯛", "季節の一皿"], winter: ["河豚", "白子", "蟹", "牡蠣"] } },
+    cuisine: { rail: "お料理", seasons: { spring: "春", summer: "夏", autumn: "秋", winter: "冬" }, captions: { spring: ["筍", "山菜", "桜鯛", "蛍烏賊"], summer: ["鮎", "雲丹", "鱧", "茄子"], autumn: ["季節野菜の炒め", "松茸と和牛", "銀杏と大海老の椒塩仕立て", "無花果のスープ"], winter: ["松茸と牛尾のスープ", "栗の油淋鶏", "海鮮と季節野菜の炒め", "ふかひれの黄金スープ"] } },
     menus: {
       rail: "メニュー", notice: "長亭のコースはすべて事前予約制です", specialLabel: "特別コース", close: "閉じる",
       featured: [
@@ -54,7 +54,7 @@ const copy = {
     hero: { line1: "Chinese technique", line2: "Japanese seasons" },
     origin: { rail: "Origin", lead: "A short pavilion at five li\nA long pavilion at ten", body: ["In ancient China, a changting was a place along the road where travellers rested, loved ones said farewell, and returning friends were welcomed home.", "Quietly watching over meetings and reunions, it connected one person to another. We placed that sentiment in our name: CHOTEI."] },
     philosophy: { rail: "Philosophy", headline: "Not fusion\nDialogue", body: ["CHOTEI is grounded in Chinese cuisine, while drawing inspiration from the seasons, ingredients and aesthetic clarity cherished in Japanese cooking.", "China speaks of eating in time; Japan speaks of shun, the precise moment of seasonality. Different expressions share one truth: flavour begins with listening to nature.", "Chinese technique reflects the Japanese seasons. Two culinary cultures resonate clearly within a single plate. This is the cuisine of CHOTEI."] },
-    cuisine: { rail: "Cuisine", seasons: { spring: "Spring", summer: "Summer", autumn: "Autumn", winter: "Winter" }, captions: { spring: ["Bamboo shoot", "Mountain vegetables", "Sakura sea bream", "Firefly squid"], summer: ["Ayu sweetfish", "Sea urchin", "Pike conger", "Eggplant"], autumn: ["Matsutake and wagyu", "Steamed golden-eye snapper", "Regional sake and snapper", "Seasonal course"], winter: ["Fugu", "Shirako", "Crab", "Oyster"] } },
+    cuisine: { rail: "Cuisine", seasons: { spring: "Spring", summer: "Summer", autumn: "Autumn", winter: "Winter" }, captions: { spring: ["Bamboo shoot", "Mountain vegetables", "Sakura sea bream", "Firefly squid"], summer: ["Ayu sweetfish", "Sea urchin", "Pike conger", "Eggplant"], autumn: ["Stir-fried seasonal vegetables", "Matsutake and wagyu", "Salt-and-pepper prawns with ginkgo", "Fig soup"], winter: ["Matsutake and oxtail soup", "Chestnut crispy chicken", "Stir-fried seafood and seasonal vegetables", "Shark fin in golden broth"] } },
     menus: {
       rail: "Menus", notice: "All CHOTEI courses are offered by advance reservation", specialLabel: "Special courses", close: "Close",
       featured: [
@@ -80,7 +80,7 @@ const copy = {
     hero: { line1: "以中国料理之技", line2: "奏响日本四季" },
     origin: { rail: "長亭由来", lead: "五里短亭\n十里长亭", body: ["在中国古代，长亭是旅途中停歇的地方，也是送别挚友、迎接归人的所在。", "它静静见证相遇与重逢，将人与人相连。我们把这份心意放进“長亭”之名。"] },
     philosophy: { rail: "料理哲学", headline: "不是融合\n而是对话", body: ["長亭以中华料理为根基，同时从日本料理珍视的四季、食材与审美中获得启发。", "中国讲“不时不食”，日本讲“旬”。表达不同，却共同相信：真正的美味来自顺应自然、尊重当季。", "以中餐技法映照日本四季，让两种饮食文化在一盘之中清晰回应——这就是長亭的料理。"] },
-    cuisine: { rail: "四季料理", seasons: { spring: "春", summer: "夏", autumn: "秋", winter: "冬" }, captions: { spring: ["竹笋", "山菜", "樱鲷", "萤火鱿"], summer: ["鲇鱼", "海胆", "海鳗", "茄子"], autumn: ["松茸与和牛", "清蒸金目鲷", "地酒与金目鲷", "时令一品"], winter: ["河豚", "白子", "螃蟹", "牡蛎"] } },
+    cuisine: { rail: "四季料理", seasons: { spring: "春", summer: "夏", autumn: "秋", winter: "冬" }, captions: { spring: ["竹笋", "山菜", "樱鲷", "萤火鱿"], summer: ["鲇鱼", "海胆", "海鳗", "茄子"], autumn: ["炒时蔬", "松茸煎和牛", "椒盐银杏大虾球", "无花果汤"], winter: ["松茸牛尾汤", "栗子油淋鸡", "海鲜时蔬小炒", "金汤鱼翅"] } },
     menus: {
       rail: "菜单套餐", notice: "長亭所有套餐均采用预约制", specialLabel: "特别套餐", close: "关闭",
       featured: [
@@ -205,7 +205,7 @@ export default function ChoteiSite() {
       <section className="philosophy light-section" id="philosophy">
         <RailTitle label={t.philosophy.rail} />
         <h2>{t.philosophy.headline.split("\n").map(line => <span key={line}>{line}</span>)}</h2>
-        <div className="philosophy__body">{t.philosophy.body.map((p, index) => <p key={p} className={index === 2 ? "is-highlight" : ""}>{p}</p>)}</div>
+        <div className="philosophy__body">{t.philosophy.body.map(p => <p key={p}>{p}</p>)}</div>
       </section>
 
       <section className="cuisine light-section" id="cuisine">

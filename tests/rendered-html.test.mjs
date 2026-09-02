@@ -95,10 +95,10 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(source, /上海蟹味噌ふかひれ/);
   assert.match(source, /basic: menuContent\.ja/);
   assert.match(source, /ingredient-summer-01\.webp/);
-  assert.match(source, /ingredient-winter-01\.webp/);
+  assert.match(source, /winter-matsutake-oxtail\.webp/);
   assert.match(source, /spring: \["筍", "山菜", "桜鯛", "蛍烏賊"\]/);
   assert.match(source, /summer: \["鮎", "雲丹", "鱧", "茄子"\]/);
-  assert.match(source, /winter: \["河豚", "白子", "蟹", "牡蠣"\]/);
+  assert.match(source, /winter: \["松茸と牛尾のスープ", "栗の油淋鶏", "海鮮と季節野菜の炒め", "ふかひれの黄金スープ"\]/);
   assert.match(css, /\.cuisine \{[^}]*min-height: 100svh;/s);
   assert.match(css, /\.hero h1 span, \.origin > h2 span, \.philosophy > h2 span \{ white-space: nowrap; \}/);
   assert.match(css, /\.site--en \.origin > h2 \{[^}]*font-size: clamp\(27px, 2\.5vw, 36px\);/s);
@@ -117,7 +117,7 @@ test("uses the refined Mincho font, notice modal, and animated scroll guide", as
   assert.match(css, /animation: storeCarousel 27s/);
   assert.doesNotMatch(css, /mix-blend-mode/);
   assert.match(css, /@keyframes storeCarousel/);
-  assert.match(css, /--reservation-gold: #c8ae62;/);
+  assert.match(css, /--reservation-gold: #D8B780;/);
   assert.match(css, /\.reservation \{[^}]*place-items: center;/s);
   assert.doesNotMatch(css, /\.reservation__identity[^}]*border-right/);
   assert.match(source, /loading="eager" decoding="async"/);
@@ -170,4 +170,42 @@ test("replaces guest notices consistently in all three languages", () => {
     assert.match(sections[3].paragraphs[2], /PayPay/);
     assert.doesNotMatch(JSON.stringify(sections), /Peccotter|Auto Reserve|ドレスコード|Dress code|着装要求/);
   }
+});
+
+test("uses the supplied seasonal and special-course photos in the requested slots", async () => {
+  const source = await readFile(new URL("../app/ChoteiSite.tsx", import.meta.url), "utf8");
+  const getImages = name => {
+    const list = source.match(new RegExp(`${name}: \\[([^\\]]+)\\]`))?.[1];
+    assert.ok(list, `${name} image list exists`);
+    return [...list.matchAll(/"([^"]+)"/g)].map(match => match[1]);
+  };
+  assert.deepEqual(getImages("autumn"), ["autumn-vegetables.webp", "autumn-matsutake-wagyu.webp", "autumn-prawn-ginkgo.webp", "autumn-fig-soup.webp"]);
+  assert.deepEqual(getImages("winter"), ["winter-matsutake-oxtail.webp", "winter-chestnut-chicken.webp", "winter-seafood-vegetables.webp", "winter-golden-shark-fin.webp"]);
+  for (const season of ["spring", "summer"]) {
+    assert.deepEqual(getImages(season), [1, 2, 3, 4].map(index => `ingredient-${season}-0${index}.webp`));
+  }
+  assert.match(source, /const premiumCourseImages = \["winter-fukahire.webp", "special-abalone.webp", "special-buddha-soup.webp", "special-bear-paw.webp"\]/);
+  assert.match(source, /autumn: \["季節野菜の炒め", "松茸と和牛", "銀杏と大海老の椒塩仕立て", "無花果のスープ"\]/);
+  assert.match(source, /autumn: \["Stir-fried seasonal vegetables", "Matsutake and wagyu", "Salt-and-pepper prawns with ginkgo", "Fig soup"\]/);
+  assert.match(source, /autumn: \["炒时蔬", "松茸煎和牛", "椒盐银杏大虾球", "无花果汤"\]/);
+  assert.match(source, /winter: \["Matsutake and oxtail soup", "Chestnut crispy chicken", "Stir-fried seafood and seasonal vegetables", "Shark fin in golden broth"\]/);
+  assert.match(source, /winter: \["松茸牛尾汤", "栗子油淋鸡", "海鲜时蔬小炒", "金汤鱼翅"\]/);
+
+  const newPhotos = [...getImages("autumn"), ...getImages("winter"), "special-abalone.webp", "special-buddha-soup.webp", "special-bear-paw.webp"];
+  for (const filename of newPhotos) {
+    const data = await readFile(new URL(`../public/images/real/${filename}`, import.meta.url));
+    assert.equal(data.toString("ascii", 0, 4), "RIFF", filename);
+    assert.equal(data.toString("ascii", 8, 12), "WEBP", filename);
+    assert.ok(data.length > 1000 && data.length < 1_000_000, `${filename} is optimized for the web`);
+  }
+});
+
+test("keeps philosophy paragraphs one color and uses the requested reservation background", async () => {
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+  const source = await readFile(new URL("../app/ChoteiSite.tsx", import.meta.url), "utf8");
+  assert.match(css, /\.philosophy__body \{[^}]*color: #706a63;/);
+  assert.doesNotMatch(css, /\.philosophy__body \.is-highlight/);
+  assert.doesNotMatch(source, /is-highlight/);
+  assert.match(css, /--reservation-gold: #D8B780;/);
+  assert.match(css, /\.reservation \{[^}]*background: var\(--reservation-gold\);/);
 });
